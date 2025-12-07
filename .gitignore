@@ -234,6 +234,7 @@ verify_deployment_ready.sh
 # Docker
 docker-compose.yml
 nginx.conf
+./supabase
 
 # Terraform
 ai-backend/terraform/.terraform/
