@@ -1,0 +1,109 @@
+import 'package:flutter/foundation.dart';
+
+/// API Configuration for different environments
+class ApiConfig {
+  // Production API URL (update this with your actual deployed URL)
+  static const String productionBaseUrl = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: 'https://api.fineasy.tech',
+  );
+
+  // Development API URL (Local AI Backend)
+  static const String developmentBaseUrl = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: 'http://localhost:8000',
+  );
+
+  // Get the appropriate base URL based on build mode with HTTPS enforcement
+  static String get baseUrl {
+    const bool isProduction = bool.fromEnvironment('dart.vm.product');
+    final url = isProduction ? productionBaseUrl : developmentBaseUrl;
+
+    // Enforce HTTPS in production builds
+    if (isProduction && !url.startsWith('https://')) {
+      throw StateError(
+        'SECURITY ERROR: Production builds must use HTTPS. '
+        'Current URL: $url. Please update API_BASE_URL environment variable.',
+      );
+    }
+
+    // Warn about HTTP usage in development
+    if (!isProduction &&
+        url.startsWith('http://') &&
+        !url.contains('localhost')) {
+      debugPrint(
+        'WARNING: Using HTTP for non-localhost URL in development: $url. '
+        'Consider using HTTPS for better security.',
+      );
+    }
+
+    return url;
+  }
+
+  // API endpoints
+  static String get healthEndpoint => '$baseUrl/health';
+  static String get nlpProcessInvoiceEndpoint =>
+      '$baseUrl/api/nlp/process-invoice';
+  static String get nlpCreateInvoiceEndpoint =>
+      '$baseUrl/api/nlp/create-invoice';
+  static String get fraudDetectionEndpoint => '$baseUrl/api/fraud/analyze';
+  static String get insightsEndpoint => '$baseUrl/api/insights/generate';
+  static String get complianceEndpoint => '$baseUrl/api/compliance/check';
+
+  // Timeout configurations
+  static const Duration connectTimeout = Duration(seconds: 30);
+  static const Duration receiveTimeout = Duration(seconds: 60);
+
+  // Headers
+  static Map<String, String> get defaultHeaders => {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+  };
+
+  // Validate URL uses HTTPS (for production)
+  static bool isSecureUrl(String url) {
+    return url.startsWith('https://');
+  }
+
+  // Validate all endpoints use HTTPS in production
+  static void validateSecureConnection() {
+    const bool isProduction = bool.fromEnvironment('dart.vm.product');
+
+    if (isProduction) {
+      if (!isSecureUrl(baseUrl)) {
+        throw StateError(
+          'SECURITY ERROR: All API endpoints must use HTTPS in production. '
+          'Current base URL: $baseUrl',
+        );
+      }
+
+      debugPrint('✓ Security Check: All API endpoints using HTTPS');
+    } else {
+      if (isSecureUrl(baseUrl)) {
+        debugPrint('✓ Development mode using HTTPS: $baseUrl');
+      } else {
+        debugPrint('⚠ Development mode using HTTP: $baseUrl');
+        debugPrint(
+          '  Consider using HTTPS even in development for better security testing',
+        );
+      }
+    }
+  }
+
+  // Debug information
+  static void printConfig() {
+    debugPrint('API Configuration:');
+    debugPrint(
+      '   Environment: ${bool.fromEnvironment('dart.vm.product') ? 'Production' : 'Development'}',
+    );
+    debugPrint('   Base URL: $baseUrl');
+    debugPrint(
+      '   Protocol: ${isSecureUrl(baseUrl) ? 'HTTPS (Secure)' : 'HTTP (Insecure)'}',
+    );
+    debugPrint('   Connect Timeout: ${connectTimeout.inSeconds}s');
+    debugPrint('   Receive Timeout: ${receiveTimeout.inSeconds}s');
+
+    // Run security validation
+    validateSecureConnection();
+  }
+}
