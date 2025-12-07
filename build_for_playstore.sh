@@ -4,7 +4,7 @@ echo "🏗️  Building for Play Store..."
 
 # Check if keystore exists
 if [ ! -f "android/keystore/release-keystore.jks" ]; then
-    echo "⚠️  Keystore not found!"
+    echo "Keystore not found!"
     echo "Creating keystore directory..."
     mkdir -p android/keystore
     
@@ -21,7 +21,7 @@ fi
 
 # Check if key.properties exists
 if [ ! -f "android/key.properties" ]; then
-    echo "⚠️  key.properties not found!"
+    echo "key.properties not found!"
     echo ""
     echo "Please create android/key.properties with:"
     echo ""
@@ -44,9 +44,9 @@ flutter build appbundle --release
 # Check if build succeeded
 if [ -f "build/app/outputs/bundle/release/app-release.aab" ]; then
     echo ""
-    echo "✅ Build successful!"
+    echo "Build successful!"
     echo ""
-    echo "📦 AAB location: build/app/outputs/bundle/release/app-release.aab"
+    echo "AAB location: build/app/outputs/bundle/release/app-release.aab"
     echo ""
     echo "AAB size:"
     ls -lh build/app/outputs/bundle/release/app-release.aab | awk '{print $5}'
@@ -60,7 +60,7 @@ if [ -f "build/app/outputs/bundle/release/app-release.aab" ]; then
     echo "6. Submit for review"
 else
     echo ""
-    echo "❌ Build failed!"
+    echo "Build failed!"
     echo "Check the error messages above."
     exit 1
 fi
