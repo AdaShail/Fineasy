@@ -44,7 +44,7 @@ flutter pub get
 3. Configure environment
 ```bash
 cp .env.example .env
-# Edit .env with your Supabase credentials
+# Edit .env with supabase credentials i gave you
 ```
 
 4. Run the app
@@ -95,10 +95,11 @@ SUPABASE_ANON_KEY=your_supabase_anon_key
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
+//To be replaced with a original one
 
 ## License
 
-Proprietary - All rights reserved
+Proprietary - All rights reserved Fineasy(AdaShail)
 
 ## Contact
 
