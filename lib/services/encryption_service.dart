@@ -30,9 +30,7 @@ class EncryptionService {
   Future<void> initialize() async {
     try {
       await _ensureEncryptionKey();
-      debugPrint('Encryption service initialized successfully');
     } catch (e) {
-      debugPrint('Failed to initialize encryption service: $e');
       rethrow;
     }
   }
@@ -69,7 +67,6 @@ class EncryptionService {
     );
     await _secureStorage.write(key: _saltKeyName, value: _cachedSalt);
 
-    debugPrint('Generated and stored new encryption keys');
   }
 
   /// Encrypt a string value
@@ -89,7 +86,6 @@ class EncryptionService {
       final encrypted = base64Encode(bytes) + '.' + digest.toString();
       return encrypted;
     } catch (e) {
-      debugPrint('Encryption failed: $e');
       rethrow;
     }
   }
@@ -124,7 +120,6 @@ class EncryptionService {
 
       return utf8.decode(bytes);
     } catch (e) {
-      debugPrint('Decryption failed: $e');
       rethrow;
     }
   }
@@ -263,7 +258,6 @@ class EncryptionService {
         try {
           decrypted[field] = await decryptString(decrypted[field]);
         } catch (e) {
-          debugPrint('Failed to decrypt field $field: $e');
           // Keep original value if decryption fails
         }
       }
@@ -278,21 +272,20 @@ class EncryptionService {
     await _secureStorage.delete(key: _saltKeyName);
     _cachedEncryptionKey = null;
     _cachedSalt = null;
-    debugPrint('Encryption keys cleared');
   }
 
   /// Rotate encryption keys (re-encrypt all data with new keys)
   Future<void> rotateKeys() async {
-    debugPrint('Starting key rotation...');
 
     // Store old key for re-encryption
     final oldKey = _cachedEncryptionKey;
 
     // Generate new keys
     await _generateAndStoreKeys();
-
-    debugPrint(
-      'Key rotation completed. Old key: ${oldKey?.substring(0, 8)}...',
-    );
+    
+    // Key rotation completed - old key reference cleared
+    if (oldKey != null) {
+      // Old key was present, rotation successful
+    }
   }
 }

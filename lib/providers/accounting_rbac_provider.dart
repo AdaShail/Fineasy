@@ -43,7 +43,6 @@ class AccountingRBACProvider extends ChangeNotifier {
       _error = null;
     } catch (e) {
       _error = 'Failed to initialize RBAC: $e';
-      debugPrint(_error);
     } finally {
       _setLoading(false);
     }
@@ -56,7 +55,6 @@ class AccountingRBACProvider extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       _error = 'Failed to load user role: $e';
-      debugPrint(_error);
     }
   }
 
@@ -67,7 +65,6 @@ class AccountingRBACProvider extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       _error = 'Failed to load business users: $e';
-      debugPrint(_error);
     }
   }
 
@@ -88,7 +85,6 @@ class AccountingRBACProvider extends ChangeNotifier {
         resourceType: resourceType,
       );
     } catch (e) {
-      debugPrint('Error checking permission: $e');
       return false;
     }
   }
@@ -121,7 +117,6 @@ class AccountingRBACProvider extends ChangeNotifier {
       return true;
     } catch (e) {
       _error = 'Failed to assign role: $e';
-      debugPrint(_error);
       _setLoading(false);
       return false;
     }
@@ -152,7 +147,6 @@ class AccountingRBACProvider extends ChangeNotifier {
       return success;
     } catch (e) {
       _error = 'Failed to grant permission: $e';
-      debugPrint(_error);
       _setLoading(false);
       return false;
     }
@@ -183,7 +177,6 @@ class AccountingRBACProvider extends ChangeNotifier {
       return success;
     } catch (e) {
       _error = 'Failed to revoke permission: $e';
-      debugPrint(_error);
       _setLoading(false);
       return false;
     }
@@ -218,7 +211,6 @@ class AccountingRBACProvider extends ChangeNotifier {
       return rule;
     } catch (e) {
       _error = 'Failed to create access rule: $e';
-      debugPrint(_error);
       _setLoading(false);
       return null;
     }
@@ -247,7 +239,6 @@ class AccountingRBACProvider extends ChangeNotifier {
       _error = null;
     } catch (e) {
       _error = 'Failed to load audit logs: $e';
-      debugPrint(_error);
     } finally {
       _setLoading(false);
     }

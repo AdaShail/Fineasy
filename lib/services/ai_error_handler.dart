@@ -216,12 +216,7 @@ class AIErrorHandler {
   /// Log error for debugging (only in debug mode)
   void logError(AIServiceException exception, [StackTrace? stackTrace]) {
     if (kDebugMode) {
-      debugPrint('AI Service Error: ${exception.message}');
-      debugPrint('Type: ${exception.type}');
-      debugPrint('Status Code: ${exception.statusCode}');
-      debugPrint('Details: ${exception.details}');
       if (stackTrace != null) {
-        debugPrint('Stack Trace: $stackTrace');
       }
     }
   }

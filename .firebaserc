@@ -1,0 +1,21 @@
+{
+  "projects": {
+    "default": "fineasy-3a2ce"
+  },
+  "targets": {
+    "fineasy-3a2ce": {
+      "hosting": {
+        "production": [
+          "fineasy-3a2ce"
+        ],
+        "staging": [
+          "fineasy-staging"
+        ],
+        "development": [
+          "fineasy-dev"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

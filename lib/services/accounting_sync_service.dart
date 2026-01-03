@@ -321,7 +321,6 @@ class AccountingSyncService {
           .eq('id', customerId);
 
       // Log balance calculation for debugging
-      print('Customer $customerId balance recalculated: ₹$outstandingBalance');
     } catch (e) {
       throw Exception(
         'Failed to recalculate customer balance: ${e.toString()}',
@@ -382,7 +381,6 @@ class AccountingSyncService {
       });
     } catch (e) {
       // Log error but don't fail the operation
-      print('Warning: Failed to create audit entry: $e');
     }
   }
 }

@@ -37,9 +37,7 @@ class AccountingRBACService {
         );
       }
 
-      debugPrint('Accounting RBAC initialized for user: $userId');
     } catch (e) {
-      debugPrint('Error initializing Accounting RBAC: $e');
       rethrow;
     }
   }
@@ -90,7 +88,6 @@ class AccountingRBACService {
 
       return userRole;
     } catch (e) {
-      debugPrint('Error assigning role: $e');
       rethrow;
     }
   }
@@ -113,7 +110,6 @@ class AccountingRBACService {
 
       return role;
     } catch (e) {
-      debugPrint('Error getting user role: $e');
       return null;
     }
   }
@@ -190,7 +186,6 @@ class AccountingRBACService {
 
       return true;
     } catch (e) {
-      debugPrint('Error checking permission: $e');
       return false;
     }
   }
@@ -230,7 +225,6 @@ class AccountingRBACService {
 
       return true;
     } catch (e) {
-      debugPrint('Error granting permission: $e');
       return false;
     }
   }
@@ -267,7 +261,6 @@ class AccountingRBACService {
 
       return true;
     } catch (e) {
-      debugPrint('Error revoking permission: $e');
       return false;
     }
   }
@@ -311,7 +304,6 @@ class AccountingRBACService {
 
       return rule;
     } catch (e) {
-      debugPrint('Error creating access rule: $e');
       rethrow;
     }
   }
@@ -351,7 +343,6 @@ class AccountingRBACService {
 
       return session;
     } catch (e) {
-      debugPrint('Error starting session: $e');
       rethrow;
     }
   }
@@ -386,7 +377,6 @@ class AccountingRBACService {
         granted: true,
       );
     } catch (e) {
-      debugPrint('Error ending session: $e');
     }
   }
 
@@ -420,7 +410,6 @@ class AccountingRBACService {
 
       return logs.take(limit).toList();
     } catch (e) {
-      debugPrint('Error getting audit logs: $e');
       return [];
     }
   }
@@ -432,7 +421,6 @@ class AccountingRBACService {
           .where((role) => role.businessId == businessId && role.isActive)
           .toList();
     } catch (e) {
-      debugPrint('Error getting business users: $e');
       return [];
     }
   }
@@ -566,7 +554,6 @@ class AccountingRBACService {
 
       return false;
     } catch (e) {
-      debugPrint('Error checking resource access: $e');
       return false;
     }
   }
@@ -615,7 +602,6 @@ class AccountingRBACService {
         },
       );
     } catch (e) {
-      debugPrint('Error logging audit: $e');
     }
   }
 

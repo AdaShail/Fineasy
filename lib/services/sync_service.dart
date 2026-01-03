@@ -77,7 +77,6 @@ class SyncService {
         await _removeFromOfflineTransactions(transaction.id);
       } catch (e) {
         // Log error but continue with other transactions
-        debugPrint('Failed to sync transaction: $e');
       }
     }
   }
@@ -104,7 +103,6 @@ class SyncService {
         // Remove from offline queue
         await _removeFromOfflineCustomers(customer.id);
       } catch (e) {
-        debugPrint('Failed to sync customer: $e');
       }
     }
   }
@@ -131,7 +129,6 @@ class SyncService {
         // Remove from offline queue
         await _removeFromOfflineSuppliers(supplier.id);
       } catch (e) {
-        debugPrint('Failed to sync supplier: $e');
       }
     }
   }

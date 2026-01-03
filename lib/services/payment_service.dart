@@ -386,7 +386,6 @@ class PaymentService {
           .map((json) => PaymentModel.fromJson(json))
           .toList();
     } catch (e) {
-      print('Error fetching invoice payments: $e');
       return [];
     }
   }
@@ -429,7 +428,6 @@ class PaymentService {
           .map((json) => PaymentModel.fromJson(json))
           .toList();
     } catch (e) {
-      print('Error fetching business payments: $e');
       return [];
     }
   }
@@ -601,7 +599,6 @@ class PaymentService {
 
       return true;
     } catch (e) {
-      print('Error deleting payment: $e');
       return false;
     }
   }
@@ -655,7 +652,6 @@ class PaymentService {
         'average_payment': totalCount > 0 ? totalAmount / totalCount : 0,
       };
     } catch (e) {
-      print('Error fetching payment stats: $e');
       return {};
     }
   }

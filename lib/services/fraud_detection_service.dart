@@ -70,7 +70,6 @@ class FraudDetectionService extends ChangeNotifier {
 
     // Validate business ID format
     if (businessId.isEmpty) {
-      debugPrint('Fraud analysis skipped: Empty business ID');
       return;
     }
 
@@ -78,9 +77,6 @@ class FraudDetectionService extends ChangeNotifier {
       r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',
     );
     if (!uuidRegex.hasMatch(businessId)) {
-      debugPrint(
-        'Fraud analysis skipped: Invalid business ID format: $businessId',
-      );
       return;
     }
 
@@ -110,7 +106,6 @@ class FraudDetectionService extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       if (e is! AIOfflineException) {
-        debugPrint('Fraud analysis failed: $e');
       }
       // Don't show error to user for background fraud checking
     } finally {
@@ -141,7 +136,6 @@ class FraudDetectionService extends ChangeNotifier {
 
       return potentialAlerts;
     } catch (e) {
-      debugPrint('Real-time fraud check failed: $e');
       return [];
     }
   }
@@ -164,7 +158,6 @@ class FraudDetectionService extends ChangeNotifier {
 
       return potentialAlerts;
     } catch (e) {
-      debugPrint('Real-time invoice fraud check failed: $e');
       return [];
     }
   }

@@ -325,8 +325,6 @@ class _WhatsAppTemplatesScreenState extends State<WhatsAppTemplatesScreen> {
         return Colors.orange;
       case WhatsAppTemplateType.custom:
         return Colors.green;
-      case WhatsAppTemplateType.custom:
-        return Colors.purple;
       default:
         return Colors.grey;
     }
@@ -340,8 +338,6 @@ class _WhatsAppTemplatesScreenState extends State<WhatsAppTemplatesScreen> {
         return Icons.payment;
       case WhatsAppTemplateType.custom:
         return Icons.waving_hand;
-      case WhatsAppTemplateType.custom:
-        return Icons.follow_the_signs;
       default:
         return Icons.message;
     }
@@ -355,8 +351,6 @@ class _WhatsAppTemplatesScreenState extends State<WhatsAppTemplatesScreen> {
         return 'Payment Reminder';
       case WhatsAppTemplateType.custom:
         return 'Welcome Message';
-      case WhatsAppTemplateType.custom:
-        return 'Follow-up Message';
       default:
         return 'Custom Template';
     }

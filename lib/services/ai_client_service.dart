@@ -43,10 +43,7 @@ class AIClientService {
     if (!isProduction &&
         _baseUrl.startsWith('http://') &&
         !_baseUrl.contains('localhost')) {
-      debugPrint(
-        'WARNING: AI Backend using HTTP for non-localhost URL: $_baseUrl. '
-        'Consider using HTTPS for better security.',
-      );
+      // Non-localhost HTTP in development - consider using HTTPS
     }
   }
 
@@ -977,20 +974,7 @@ class _RetryInterceptor extends Interceptor {
 class _ErrorInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    // Log errors in debug mode
-    if (const bool.fromEnvironment('dart.vm.product') == false) {
-      // Use debugPrint instead of print for production safety
-      debugPrint('AI Service Error: ${err.message}');
-      debugPrint(
-        'Request: ${err.requestOptions.method} ${err.requestOptions.uri}',
-      );
-      if (err.response != null) {
-        debugPrint(
-          'Response: ${err.response?.statusCode} ${err.response?.data}',
-        );
-      }
-    }
-
+    // Log errors in debug mode - no console output in production
     handler.next(err);
   }
 }

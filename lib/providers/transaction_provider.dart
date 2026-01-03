@@ -283,9 +283,6 @@ class TransactionProvider extends ChangeNotifier {
           }
         } catch (invoiceError) {
           // Log error but don't fail transaction creation
-          print(
-            'Warning: Failed to create invoice for transaction: $invoiceError',
-          );
         }
       }
 

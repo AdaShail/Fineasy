@@ -40,7 +40,6 @@ class ExpenseControlService {
 
       return triggeredRules;
     } catch (e) {
-      debugPrint('Error monitoring expense thresholds: $e');
       return [];
     }
   }
@@ -90,7 +89,6 @@ class ExpenseControlService {
 
       return pausedCategories;
     } catch (e) {
-      debugPrint('Error pausing non-essential expenses: $e');
       return [];
     }
   }
@@ -136,7 +134,6 @@ class ExpenseControlService {
 
       return reservations;
     } catch (e) {
-      debugPrint('Error reserving funds: $e');
       return [];
     }
   }
@@ -176,7 +173,6 @@ class ExpenseControlService {
 
       return categorization;
     } catch (e) {
-      debugPrint('Error categorizing expenses: $e');
       return {
         'essential': [],
         'important': [],
@@ -244,7 +240,6 @@ class ExpenseControlService {
 
       return smartRules;
     } catch (e) {
-      debugPrint('Error creating smart expense rules: $e');
       return [];
     }
   }
@@ -258,7 +253,6 @@ class ExpenseControlService {
       // For now, return empty list as placeholder
       return [];
     } catch (e) {
-      debugPrint('Error getting current reservations: $e');
       return [];
     }
   }
@@ -287,7 +281,6 @@ class ExpenseControlService {
 
       return expiredReservations;
     } catch (e) {
-      debugPrint('Error releasing expired reservations: $e');
       return [];
     }
   }
@@ -329,7 +322,6 @@ class ExpenseControlService {
         ),
       ];
     } catch (e) {
-      debugPrint('Error getting active expense rules: $e');
       return [];
     }
   }
@@ -365,7 +357,6 @@ class ExpenseControlService {
           expenses
               .where(
                 (e) =>
-                    ruleCategory != null &&
                     e.category.toLowerCase() == ruleCategory.toLowerCase(),
               )
               .toList();
@@ -376,9 +367,8 @@ class ExpenseControlService {
       );
 
       final threshold = rule.threshold;
-      return threshold != null && totalAmount >= threshold;
+      return totalAmount >= threshold;
     } catch (e) {
-      debugPrint('Error checking rule threshold: $e');
       return false;
     }
   }
@@ -401,7 +391,6 @@ class ExpenseControlService {
           break;
       }
     } catch (e) {
-      debugPrint('Error executing control action: $e');
     }
   }
 
@@ -494,7 +483,7 @@ Return only the classification word.
 ''';
 
       final response = await _aiService.generateText(prompt);
-      final priority = response?.toLowerCase().trim() ?? 'discretionary';
+      final priority = response.toLowerCase().trim();
 
       // Validate response
       const validPriorities = [
@@ -505,7 +494,6 @@ Return only the classification word.
       ];
       return validPriorities.contains(priority) ? priority : 'discretionary';
     } catch (e) {
-      debugPrint('Error analyzing category priority: $e');
       return _getDefaultPriority(category);
     }
   }
@@ -592,7 +580,6 @@ Return only the classification word.
 
       return patterns;
     } catch (e) {
-      debugPrint('Error analyzing expense patterns: $e');
       return [];
     }
   }
@@ -619,12 +606,10 @@ Return only the classification word.
 
   Future<void> _saveExpenseRule(ExpenseControlRule rule) async {
     // Implementation would save to database
-    debugPrint('Saving expense rule: ${rule.name}');
   }
 
   Future<void> _saveFundReservation(FundReservation reservation) async {
     // Implementation would save to database
-    debugPrint('Saving fund reservation: ${reservation.purpose}');
   }
 
   Future<void> _updateReservationStatus(
@@ -632,7 +617,6 @@ Return only the classification word.
     String status,
   ) async {
     // Implementation would update database
-    debugPrint('Updating reservation $reservationId to status: $status');
   }
 
   String _generateId() {

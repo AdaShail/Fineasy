@@ -46,6 +46,21 @@ class _RecurringPaymentListScreenState extends State<RecurringPaymentListScreen>
     );
 
     if (businessProvider.business != null) {
+      // First, process any due recurring payments to generate occurrences
+      final generatedCount = await recurringProvider.processRecurringPayments(
+        businessProvider.business!.id,
+      );
+      
+      if (generatedCount > 0 && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Generated $generatedCount new occurrence(s)'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+      
+      // Then load the data
       await recurringProvider.loadRecurringPayments(
         businessId: businessProvider.business!.id,
       );

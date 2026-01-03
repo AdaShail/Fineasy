@@ -6,7 +6,6 @@ class DebugHelper {
     if (kDebugMode) {
       final timestamp = DateTime.now().toIso8601String();
       final tagStr = tag != null ? '[$tag] ' : '';
-      print('🐛 $timestamp $tagStr$message');
     }
   }
 
@@ -14,8 +13,6 @@ class DebugHelper {
     if (kDebugMode) {
       final timestamp = DateTime.now().toIso8601String();
       final tagStr = tag != null ? '[$tag] ' : '';
-      print('❌ $timestamp ${tagStr}ERROR: $message');
-      print('❌ $timestamp ${tagStr}Details: $error');
     }
   }
 
@@ -23,7 +20,6 @@ class DebugHelper {
     if (kDebugMode) {
       final timestamp = DateTime.now().toIso8601String();
       final tagStr = tag != null ? '[$tag] ' : '';
-      print('✅ $timestamp $tagStr$message');
     }
   }
 

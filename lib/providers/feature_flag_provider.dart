@@ -67,7 +67,6 @@ class FeatureFlagProvider extends ChangeNotifier {
         _featureStates[feature] = enabled;
         _featureVariants[feature] = variant;
       } catch (e) {
-        debugPrint('Error loading feature $feature: $e');
         _featureStates[feature] = false;
         _featureVariants[feature] = null;
       }
@@ -87,7 +86,6 @@ class FeatureFlagProvider extends ChangeNotifier {
         interactionType: interactionType,
       );
     } catch (e) {
-      debugPrint('Error tracking interaction for $featureName: $e');
     }
   }
 
@@ -102,7 +100,6 @@ class FeatureFlagProvider extends ChangeNotifier {
         conversionValue: conversionValue,
       );
     } catch (e) {
-      debugPrint('Error tracking conversion for $featureName: $e');
     }
   }
 
@@ -118,7 +115,6 @@ class FeatureFlagProvider extends ChangeNotifier {
       notifyListeners();
       return enabled;
     } catch (e) {
-      debugPrint('Error checking feature $featureName: $e');
       return false;
     }
   }

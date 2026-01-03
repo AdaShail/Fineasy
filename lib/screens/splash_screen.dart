@@ -1,8 +1,12 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 import '../providers/business_provider.dart';
+import '../providers/recurring_payment_provider.dart';
+import '../services/app_lifecycle_service.dart';
 import 'auth/login_screen.dart';
+import '../web/screens/web_login_screen.dart';
 import 'main/main_navigation_screen.dart';
 import 'onboarding/business_setup_screen.dart';
 import '../utils/app_theme.dart';
@@ -62,6 +66,12 @@ class _SplashScreenState extends State<SplashScreen>
 
         if (mounted) {
           if (businessProvider.business != null) {
+            // Set business ID for lifecycle service (for recurring payments on app resume)
+            AppLifecycleService().setBusinessId(businessProvider.business!.id);
+            
+            // Process recurring payments automatically when business loads
+            _processRecurringPayments(businessProvider.business!.id);
+            
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (_) => const MainNavigationScreen()),
               (route) => false,
@@ -74,7 +84,6 @@ class _SplashScreenState extends State<SplashScreen>
           }
         }
       } catch (e) {
-        debugPrint('Error loading business: $e');
         if (mounted) {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (_) => const BusinessSetupScreen()),
@@ -85,9 +94,29 @@ class _SplashScreenState extends State<SplashScreen>
     } else {
       if (mounted) {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const LoginScreen()),
+          MaterialPageRoute(
+            builder: (_) => kIsWeb ? const WebLoginScreen() : const LoginScreen(),
+          ),
         );
       }
+    }
+  }
+
+  /// Process recurring payments in the background
+  void _processRecurringPayments(String businessId) async {
+    try {
+      final recurringProvider = Provider.of<RecurringPaymentProvider>(
+        context,
+        listen: false,
+      );
+      
+      // Process recurring payments - this generates any due occurrences
+      final generatedCount = await recurringProvider.processRecurringPayments(businessId);
+      
+      if (generatedCount > 0) {
+      }
+    } catch (e) {
+      // Don't block app startup if this fails
     }
   }
 

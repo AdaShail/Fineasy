@@ -39,7 +39,6 @@ class TimelineService {
 
       return true;
     } catch (e) {
-      print('Error creating post: $e');
       return false;
     }
   }
@@ -107,7 +106,6 @@ class TimelineService {
           .map<TimelinePost>((json) => TimelinePost.fromJson(json))
           .toList();
     } catch (e) {
-      print('Error getting timeline feed: $e');
       return [];
     }
   }
@@ -155,7 +153,6 @@ class TimelineService {
 
       return true;
     } catch (e) {
-      print('Error toggling like: $e');
       return false;
     }
   }
@@ -185,7 +182,6 @@ class TimelineService {
 
       return true;
     } catch (e) {
-      print('Error adding comment: $e');
       return false;
     }
   }
@@ -218,7 +214,6 @@ class TimelineService {
         visibility: visibility,
       );
     } catch (e) {
-      print('Error creating expense post: $e');
     }
   }
 
@@ -235,7 +230,6 @@ class TimelineService {
         visibility: groupId != null ? 'group' : 'friends',
       );
     } catch (e) {
-      print('Error creating achievement post: $e');
     }
   }
 
@@ -252,7 +246,6 @@ class TimelineService {
         visibility: groupId != null ? 'group' : 'friends',
       );
     } catch (e) {
-      print('Error creating budget alert post: $e');
     }
   }
 
@@ -281,7 +274,6 @@ class TimelineService {
           .map<TimelinePost>((json) => TimelinePost.fromJson(json))
           .toList();
     } catch (e) {
-      print('Error getting user posts: $e');
       return [];
     }
   }
@@ -310,7 +302,6 @@ class TimelineService {
 
       return true;
     } catch (e) {
-      print('Error deleting post: $e');
       return false;
     }
   }
@@ -339,7 +330,6 @@ class TimelineService {
         'commentCount': comments.length,
       };
     } catch (e) {
-      print('Error getting post interactions: $e');
       return {'likes': [], 'comments': [], 'likeCount': 0, 'commentCount': 0};
     }
   }

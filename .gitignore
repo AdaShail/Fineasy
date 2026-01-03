@@ -11,13 +11,10 @@
 .swiftpm/
 migrate_working_dir/
 
-# IntelliJ related
 *.iml
 *.ipr
 *.iws
 .idea/
-
-# VS Code
 .vscode/
 
 # Flutter/Dart/Pub related
@@ -120,135 +117,43 @@ venv.bak/
 *.sqlite
 *.sqlite3
 
+# Supabase migrations (keep locally, not in Git)
+supabase/
+
 # ============================================
-# AI-GENERATED DOCUMENTATION (Kiro IDE)
+# EXCLUDE NON-CODE FILES
 # ============================================
+
+# All markdown files except README.md and CONTRIBUTING.md
+*.md
+!README.md
+!CONTRIBUTING.md
+
+# All shell scripts
+*.sh
+
+# All Python scripts (not part of main app)
+*.py
 
 # Kiro IDE folder
 .kiro/
 
-# AI-generated status/progress files
-ALL_*.md
-ANDROID_*.md
-AUDIT_*.md
-BUILD_*.md
-COMPLETE_*.md
-COMPLETION_*.md
-COMPREHENSIVE_*.md
-CRITICAL_*.md
-DATABASE_*.md
-DEBUG_*.md
-DEPLOYMENT_*.md
-DOCS_*.md
-ENCRYPTION_*.md
-EXECUTIVE_*.md
-FINAL_*.md
-FIXES_*.md
-FIX_*.md
-GST_*.md
-HOW_TO_*.md
-HTTPS_*.md
-IMPLEMENTATION_*.md
-INSIGHTS_*.md
-INVOICE_*.md
-LIB_*.md
-LOCAL_*.md
-MASTER_*.md
-NAVIGATION_*.md
-PHASE_*.md
-PRODUCTION_*.md
-PYTHON_*.md
-QUICK_*.md
-RBAC_*.md
-RECEIVABLES_*.md
-RECURRING_*.md
-REFACTORING_*.md
-REMAINING_*.md
-RUNTIME_*.md
-SELECTIVE_*.md
-SERVICES_*.md
-SERVICE_*.md
-SIMPLE_*.md
-SIMPLIFIED_*.md
-SOCIAL_*.md
-SOLUTION.md
-TASK_*.md
-TRANSACTION_*.md
-UI_UX_*.md
-UX_*.md
-VIEW_*.md
-APP_ICON_*.md
-AI_BACKEND_*.md
-PLAYSTORE_*.md
-START_*.md
-UPDATE_*.md
-PROGRESS_*.md
+# Text documentation files
+*.txt
+!requirements.txt
 
-# AI-generated files with emoji names
-📖_*.md
-🎯_*.md
-
-# AI-generated text files
-*_FLOWCHART.txt
-*_DIAGRAM.txt
-*_CHECKLIST.txt
-
-# Comprehensive testing guide (AI-generated)
-docs/comprehensive-testing-guide/
-
-# Business documentation (AI-generated)
-docs/business-documentation/
-
-# Invoice accounting docs (AI-generated)
-docs/invoice-accounting/
-
-# ============================================
-# AI-GENERATED SCRIPTS & HELPERS
-# ============================================
-
-# AI-generated fix scripts
-complete_implementation.sh
-comprehensive_flutter_fix.dart
-continue_refactoring.sh
-deploy_critical_fixes.sh
-deploy_fixes.sh
-fix_*.sh
-fix_*.dart
-fix_*.py
-test_data_generator.dart
-test_insights_debug.dart
-analysis_output.txt
-
-# AI-generated helper scripts
-setup_app_icons.sh
-generate_ios_icons.py
-setup_environment.sh
-verify_deployment_ready.sh
-*.sh
-
-# Keep these essential scripts (comment out to include)
-# build_for_playstore.sh
-# build_with_env.sh
-# prepare_for_github.sh
-
-# Docker
+# Docker/Infrastructure (keep locally)
 docker-compose.yml
 nginx.conf
-./supabase
 
-# Terraform
+# Docs folder
+docs/
 ai-backend/terraform/.terraform/
 ai-backend/terraform/*.tfstate
 ai-backend/terraform/*.tfstate.backup
 ai-backend/terraform/.terraform.lock.hcl
-
-# Kubernetes
 ai-backend/k8s/secrets/
-
-# Monitoring
 ai-backend/monitoring/data/
-
-# Large binary files
 *.bin
 *.so
 *.dylib
@@ -258,7 +163,5 @@ ai-backend/monitoring/data/
 *.ipa
 *.dSYM.zip
 *.dSYM/
-
-# Git
 .git/
 .github/workflows/

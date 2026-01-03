@@ -1,0 +1,73 @@
+{
+    "version": 2,
+    "name": "fineasy-landing",
+    "builds": [
+        {
+            "src": "**/*",
+            "use": "@vercel/static"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "headers": {
+                "Cache-Control": "public, max-age=31536000, immutable"
+            },
+            "continue": true
+        },
+        {
+            "src": "/index.html",
+            "headers": {
+                "Cache-Control": "public, max-age=0, must-revalidate"
+            }
+        }
+    ],
+    "headers": [
+        {
+            "source": "/(.*)",
+            "headers": [
+                {
+                    "key": "X-Content-Type-Options",
+                    "value": "nosniff"
+                },
+                {
+                    "key": "X-Frame-Options",
+                    "value": "DENY"
+                },
+                {
+                    "key": "X-XSS-Protection",
+                    "value": "1; mode=block"
+                },
+                {
+                    "key": "Referrer-Policy",
+                    "value": "strict-origin-when-cross-origin"
+                },
+                {
+                    "key": "Permissions-Policy",
+                    "value": "geolocation=(), microphone=(), camera=()"
+                },
+                {
+                    "key": "Strict-Transport-Security",
+                    "value": "max-age=31536000; includeSubDomains"
+                }
+            ]
+        }
+    ],
+    "redirects": [
+        {
+            "source": "/app",
+            "destination": "https://app.fineasy.tech",
+            "permanent": false
+        },
+        {
+            "source": "/login",
+            "destination": "https://app.fineasy.tech",
+            "permanent": false
+        },
+        {
+            "source": "/register",
+            "destination": "https://app.fineasy.tech/register",
+            "permanent": false
+        }
+    ]
+}

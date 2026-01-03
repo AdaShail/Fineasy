@@ -220,9 +220,6 @@ class CustomerProvider extends ChangeNotifier {
           await _syncService.recalculateCustomerBalance(customer.id);
         } catch (e) {
           // Log error but continue with other customers
-          print(
-            'Warning: Failed to recalculate balance for customer ${customer.id}: $e',
-          );
         }
       }
 

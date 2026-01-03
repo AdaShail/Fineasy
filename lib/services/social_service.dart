@@ -17,7 +17,6 @@ class SocialService {
       if (response == null) return null;
       return UserProfile.fromJson(response);
     } catch (e) {
-      print('Error getting user profile: $e');
       return null;
     }
   }
@@ -48,7 +47,6 @@ class SocialService {
 
       return UserProfile.fromJson(response);
     } catch (e) {
-      print('Error creating user profile: $e');
       return null;
     }
   }
@@ -61,7 +59,6 @@ class SocialService {
           .eq('user_id', _supabase.auth.currentUser!.id);
       return true;
     } catch (e) {
-      print('Error updating user profile: $e');
       return false;
     }
   }
@@ -83,7 +80,6 @@ class SocialService {
           .map<UserProfile>((json) => UserProfile.fromJson(json))
           .toList();
     } catch (e) {
-      print('Error searching users: $e');
       return [];
     }
   }
@@ -101,7 +97,6 @@ class SocialService {
           .map<UserProfile>((json) => UserProfile.fromJson(json))
           .toList();
     } catch (e) {
-      print('Error getting all users: $e');
       return [];
     }
   }
@@ -112,7 +107,6 @@ class SocialService {
         _supabase.auth.currentUser!.id,
       );
       if (currentProfile == null) {
-        print('Current user profile not found');
         return false;
       }
 
@@ -130,7 +124,6 @@ class SocialService {
               .maybeSingle();
 
       if (existingConnection != null) {
-        print('Connection already exists');
         return false;
       }
 
@@ -141,7 +134,6 @@ class SocialService {
       });
       return true;
     } catch (e) {
-      print('Error sending friend request: $e');
       return false;
     }
   }
@@ -154,7 +146,6 @@ class SocialService {
           .eq('id', connectionId);
       return true;
     } catch (e) {
-      print('Error accepting friend request: $e');
       return false;
     }
   }
@@ -180,7 +171,6 @@ class SocialService {
           .map<UserConnection>((json) => UserConnection.fromJson(json))
           .toList();
     } catch (e) {
-      print('Error getting friend requests: $e');
       return [];
     }
   }
@@ -213,7 +203,6 @@ class SocialService {
       }
       return friends;
     } catch (e) {
-      print('Error getting friends: $e');
       return [];
     }
   }
@@ -258,14 +247,11 @@ class SocialService {
           'role': 'admin',
         });
       } catch (memberError) {
-        print(
-          'Note: Creator might already be added by database trigger: $memberError',
-        );
+        // Creator might already be added by database trigger
       }
 
       return ExpenseGroup.fromJson(response);
     } catch (e) {
-      print('Error creating group: $e');
       return null;
     }
   }
@@ -297,7 +283,6 @@ class SocialService {
               .maybeSingle();
 
       if (groupResponse == null) {
-        print('Group not found with invite code: $inviteCode');
         return false;
       }
 
@@ -311,7 +296,6 @@ class SocialService {
               .maybeSingle();
 
       if (existingMember != null) {
-        print('User is already a member of this group');
         return true; // Already a member, consider it success
       }
 
@@ -322,10 +306,8 @@ class SocialService {
         'role': 'member',
       });
 
-      print('Successfully joined group: ${groupResponse['name']}');
       return true;
     } catch (e) {
-      print('Error joining group: $e');
       return false;
     }
   }
@@ -336,11 +318,9 @@ class SocialService {
         _supabase.auth.currentUser!.id,
       );
       if (currentProfile == null) {
-        print('No current profile found for user groups');
         return [];
       }
 
-      print('Loading groups for profile: ${currentProfile.id}');
 
       final response = await _supabase
           .from('group_members')
@@ -352,7 +332,6 @@ class SocialService {
           ''')
           .eq('user_id', currentProfile.id);
 
-      print('Group members response: $response');
 
       final groups =
           response
@@ -360,10 +339,8 @@ class SocialService {
               .map<ExpenseGroup>((json) => ExpenseGroup.fromJson(json['group']))
               .toList();
 
-      print('Found ${groups.length} groups');
       return groups;
     } catch (e) {
-      print('Error getting user groups: $e');
       return [];
     }
   }
@@ -400,7 +377,6 @@ class SocialService {
 
       return true;
     } catch (e) {
-      print('Error adding expense: $e');
       return false;
     }
   }
@@ -439,7 +415,6 @@ class SocialService {
 
       return response.map<Expense>((json) => Expense.fromJson(json)).toList();
     } catch (e) {
-      print('Error getting expenses: $e');
       return [];
     }
   }
@@ -466,7 +441,6 @@ class SocialService {
           .map<CorpusTransaction>((json) => CorpusTransaction.fromJson(json))
           .toList();
     } catch (e) {
-      print('Error getting corpus history: $e');
       return [];
     }
   }
@@ -498,7 +472,6 @@ class SocialService {
 
       return true;
     } catch (e) {
-      print('Error adding financial task: $e');
       return false;
     }
   }
@@ -523,7 +496,6 @@ class SocialService {
           .map<FinancialTask>((json) => FinancialTask.fromJson(json))
           .toList();
     } catch (e) {
-      print('Error getting financial tasks: $e');
       return [];
     }
   }

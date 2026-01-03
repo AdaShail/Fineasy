@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <!-- Primary Meta Tags -->
+    <title>FinEasy - Smart Business Finance Management | Invoicing, Payments & Analytics</title>
+    <meta name="title" content="FinEasy - Smart Business Finance Management | Invoicing, Payments & Analytics">
+    <meta name="description" content="Simplify your business finances with FinEasy. Create professional invoices, track payments, manage customers & suppliers, and get AI-powered insights. Free to start!">
+    <meta name="keywords" content="invoice software, business finance, payment tracking, GST invoicing, small business accounting, expense management, financial analytics, receivables management, supplier management, customer management">
+    <meta name="author" content="FinEasy">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fineasy.tech/">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fineasy.tech/">
+    <meta property="og:title" content="FinEasy - Smart Business Finance Management">
+    <meta property="og:description" content="Simplify your business finances. Create invoices, track payments, manage customers & get AI-powered insights.">
+    <meta property="og:image" content="https://fineasy.tech/assets/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="FinEasy">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://fineasy.tech/">
+    <meta name="twitter:title" content="FinEasy - Smart Business Finance Management">
+    <meta name="twitter:description" content="Simplify your business finances. Create invoices, track payments, manage customers & get AI-powered insights.">
+    <meta name="twitter:image" content="https://fineasy.tech/assets/twitter-image.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#6366f1">
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "FinEasy",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web, Android, iOS",
+        "description": "Smart business finance management app for invoicing, payments, and analytics",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "INR"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "1250"
+        },
+        "author": {
+            "@type": "Organization",
+            "name": "FinEasy"
+        }
+    }
+    </script>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container" >
+            <a href="#" class="logo">
+                <svg class="logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="40" height="40" rx="10" fill="url(#logo-gradient)"/>
+                    <path d="M12 14h16M12 20h12M12 26h8" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                    <defs>
+                        <linearGradient id="logo-gradient" x1="0" y1="0" x2="40" y2="40">
+                            <stop stop-color="#6366f1"/>
+                            <stop offset="1" stop-color="#8b5cf6"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span>FinEasy</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#testimonials">Reviews</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="https://app.fineasy.tech" class="btn btn-ghost">Sign In</a>
+                <a href="https://app.fineasy.tech/register" class="btn btn-primary">Get Started Free</a>
+            </div>
+            <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+        <ul class="mobile-nav-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#testimonials">Reviews</a></li>
+            <li><a href="https://app.fineasy.tech" class="btn btn-ghost">Sign In</a></li>
+            <li><a href="https://app.fineasy.tech/register" class="btn btn-primary">Get Started Free</a></li>
+        </ul>
+    </div>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-bg">
+            <div class="hero-gradient"></div>
+            <div class="hero-pattern"></div>
+        </div>
+        <div class="container hero-content">
+            <div class="hero-text">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    <span>Trusted by 10,000+ businesses</span>
+                </div>
+                <h1>Manage Your Business Finances <span class="gradient-text">Effortlessly</span></h1>
+                <p class="hero-description">Create professional invoices, track payments, manage customers & suppliers, and unlock AI-powered insights — all in one beautiful app.</p>
+                <div class="hero-cta">
+                    <a href="https://app.fineasy.tech/register" class="btn btn-primary btn-lg">
+                        Start Free Today
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                    <a href="#demo" class="btn btn-outline btn-lg">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M8 7l5 3-5 3V7z" fill="currentColor"/>
+                        </svg>
+                        Watch Demo
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">50K+</span>
+                        <span class="stat-label">Invoices Created</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat">
+                        <span class="stat-number">₹2Cr+</span>
+                        <span class="stat-label">Payments Tracked</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat">
+                        <span class="stat-number">4.8★</span>
+                        <span class="stat-label">User Rating</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="app-preview">
+                    <div class="app-window">
+                        <div class="window-header">
+                            <div class="window-dots">
+                                <span></span><span></span><span></span>
+                            </div>
+                        </div>
+                        <div class="window-content">
+                            <div class="dashboard-preview">
+                                <div class="preview-card card-revenue">
+                                    <div class="card-icon green">
+                                        <svg viewBox="0 0 24 24" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                                    </div>
+                                    <div class="card-info">
+                                        <span class="card-label">Total Revenue</span>
+                                        <span class="card-value">₹4,52,340</span>
+                                        <span class="card-change positive">+12.5%</span>
+                                    </div>
+                                </div>
+                                <div class="preview-card card-invoices">
+                                    <div class="card-icon blue">
+                                        <svg viewBox="0 0 24 24" fill="none"><path d="M9 12h6M9 16h6M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                                    </div>
+                                    <div class="card-info">
+                                        <span class="card-label">Pending Invoices</span>
+                                        <span class="card-value">23</span>
+                                        <span class="card-change">₹1,24,500 due</span>
+                                    </div>
+                                </div>
+                                <div class="preview-chart">
+                                    <div class="chart-bars">
+                                        <div class="bar" style="--height: 40%"></div>
+                                        <div class="bar" style="--height: 65%"></div>
+                                        <div class="bar" style="--height: 45%"></div>
+                                        <div class="bar" style="--height: 80%"></div>
+                                        <div class="bar" style="--height: 55%"></div>
+                                        <div class="bar" style="--height: 90%"></div>
+                                        <div class="bar active" style="--height: 75%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="floating-card card-1">
+                        <div class="fc-icon">✓</div>
+                        <div class="fc-text">
+                            <span class="fc-title">Payment Received</span>
+                            <span class="fc-amount">₹15,000</span>
+                        </div>
+                    </div>
+                    <div class="floating-card card-2">
+                        <div class="fc-icon">📊</div>
+                        <div class="fc-text">
+                            <span class="fc-title">AI Insight</span>
+                            <span class="fc-desc">Revenue up 23%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-wave">
+            <svg viewBox="0 0 1440 120" fill="none" preserveAspectRatio="none">
+                <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="white"/>
+            </svg>
+        </div>
+    </header>
+</body>
+</html>
+
+    <!-- Logos Section -->
+    <section class="logos-section">
+        <div class="container">
+            <p class="logos-title">Trusted by businesses across India</p>
+            <div class="logos-grid">
+                <div class="logo-item">Retail</div>
+                <div class="logo-item">Services</div>
+                <div class="logo-item">Freelancers</div>
+                <div class="logo-item">Agencies</div>
+                <div class="logo-item">Startups</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Features</span>
+                <h2>Everything you need to manage your finances</h2>
+                <p>Powerful tools designed for small businesses, freelancers, and growing companies.</p>
+            </div>
+            <div class="features-grid">
+                <article class="feature-card">
+                    <div class="feature-icon purple">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M9 12h6M9 16h6M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    </div>
+                    <h3>Professional Invoicing</h3>
+                    <p>Create beautiful, GST-compliant invoices in seconds. Customize templates, add your logo, and send via WhatsApp or email.</p>
+                    <ul class="feature-list">
+                        <li>GST-ready templates</li>
+                        <li>Auto-numbering</li>
+                        <li>WhatsApp sharing</li>
+                    </ul>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon blue">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    </div>
+                    <h3>Payment Tracking</h3>
+                    <p>Never miss a payment. Track receivables, send reminders, and get notified when payments arrive.</p>
+                    <ul class="feature-list">
+                        <li>Auto reminders</li>
+                        <li>UPI integration</li>
+                        <li>Payment links</li>
+                    </ul>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon green">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    </div>
+                    <h3>Customer & Supplier Management</h3>
+                    <p>Keep all your contacts organized. Track transaction history, outstanding balances, and communication.</p>
+                    <ul class="feature-list">
+                        <li>Contact profiles</li>
+                        <li>Transaction history</li>
+                        <li>Balance tracking</li>
+                    </ul>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon orange">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M18 20V10M12 20V4M6 20v-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    </div>
+                    <h3>Smart Analytics</h3>
+                    <p>Understand your business with AI-powered insights. Track revenue, expenses, and growth trends.</p>
+                    <ul class="feature-list">
+                        <li>Revenue reports</li>
+                        <li>Cash flow analysis</li>
+                        <li>AI insights</li>
+                    </ul>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon pink">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="2"/><path d="M22 6l-10 7L2 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    </div>
+                    <h3>Recurring Payments</h3>
+                    <p>Set up recurring invoices and payments. Perfect for subscriptions, retainers, and regular billing.</p>
+                    <ul class="feature-list">
+                        <li>Auto-generate invoices</li>
+                        <li>Flexible schedules</li>
+                        <li>Payment reminders</li>
+                    </ul>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon cyan">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    </div>
+                    <h3>Bank-Grade Security</h3>
+                    <p>Your data is encrypted and secure. We use industry-standard security to protect your business information.</p>
+                    <ul class="feature-list">
+                        <li>256-bit encryption</li>
+                        <li>Secure cloud backup</li>
+                        <li>Role-based access</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">How It Works</span>
+                <h2>Get started in 3 simple steps</h2>
+                <p>No complex setup. No learning curve. Just sign up and start managing your finances.</p>
+            </div>
+            <div class="steps-grid">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Create Your Account</h3>
+                        <p>Sign up in 30 seconds with your email or phone. Add your business details and you're ready to go.</p>
+                    </div>
+                    <div class="step-visual">
+                        <div class="step-icon">
+                            <svg viewBox="0 0 24 24" fill="none"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Add Your Customers</h3>
+                        <p>Import your contacts or add them manually. FinEasy keeps everything organized for you.</p>
+                    </div>
+                    <div class="step-visual">
+                        <div class="step-icon">
+                            <svg viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Start Invoicing</h3>
+                        <p>Create your first invoice, track payments, and watch your business grow with powerful insights.</p>
+                    </div>
+                    <div class="step-visual">
+                        <div class="step-icon">
+                            <svg viewBox="0 0 24 24" fill="none"><path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M22 4L12 14.01l-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="demo-section" id="demo">
+        <div class="container">
+            <div class="demo-content">
+                <div class="demo-text">
+                    <span class="section-badge">See It In Action</span>
+                    <h2>Watch how FinEasy transforms your business</h2>
+                    <p>See how easy it is to create invoices, track payments, and manage your finances — all from one dashboard.</p>
+                    <ul class="demo-features">
+                        <li>
+                            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                            Create invoices in under 60 seconds
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                            Send payment reminders via WhatsApp
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                            Track all receivables in one place
+                        </li>
+                    </ul>
+                </div>
+                <div class="demo-video">
+                    <div class="video-wrapper">
+                        <div class="video-placeholder" id="video-placeholder">
+                            <div class="play-button">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                            </div>
+                            <span>Watch 2-min demo</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Testimonials</span>
+                <h2>Loved by businesses everywhere</h2>
+                <p>See what our users have to say about FinEasy.</p>
+            </div>
+            <div class="testimonials-grid">
+                <article class="testimonial-card">
+                    <div class="testimonial-rating">★★★★★</div>
+                    <blockquote>"FinEasy has completely transformed how I manage my freelance business. Creating invoices used to take me 30 minutes, now it takes 2 minutes!"</blockquote>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">RK</div>
+                        <div class="author-info">
+                            <span class="author-name">Rahul Kumar</span>
+                            <span class="author-role">Freelance Designer</span>
+                        </div>
+                    </div>
+                </article>
+                <article class="testimonial-card featured">
+                    <div class="testimonial-rating">★★★★★</div>
+                    <blockquote>"The payment tracking feature is a game-changer. I've reduced my outstanding receivables by 40% since using FinEasy. The WhatsApp reminders work like magic!"</blockquote>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">PS</div>
+                        <div class="author-info">
+                            <span class="author-name">Priya Sharma</span>
+                            <span class="author-role">Retail Store Owner</span>
+                        </div>
+                    </div>
+                </article>
+                <article class="testimonial-card">
+                    <div class="testimonial-rating">★★★★★</div>
+                    <blockquote>"Finally, an invoicing app that understands Indian businesses. GST compliance, UPI payments, WhatsApp integration — it has everything I need."</blockquote>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">AM</div>
+                        <div class="author-info">
+                            <span class="author-name">Amit Mehta</span>
+                            <span class="author-role">Agency Founder</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Pricing</span>
+                <h2>Simple, transparent pricing</h2>
+                <p>Start free, upgrade when you need more.</p>
+            </div>
+            <div class="pricing-grid">
+                <article class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Free</h3>
+                        <div class="price">
+                            <span class="price-amount">₹0</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        <p>Perfect for getting started</p>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Up to 50 invoices/month</li>
+                        <li><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> 25 customers</li>
+                        <li><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Basic analytics</li>
+                        <li><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> WhatsApp sharing</li>
+                        <li><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Email support</li>
+                    </ul>
+                    <a href="https://app.fineasy.tech/register" class="btn btn-outline btn-block">Get Started Free</a>
+                </article>
+                <article class="pricing-card popular">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="pricing-header">
+                        <h3>Pro</h3>
+                        <div class="price">
+                            <span class="price-amount">₹499</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        <p>For growing businesses</p>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Unlimited invoices</li>
+                        <li><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Unlimited customers</li>
+                        <li><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Advanced analytics & AI insights</li>
+                        <li><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Recurring invoices</li>
+                        <li><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Auto payment reminders</li>
+                        <li><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Priority support</li>
+                    </ul>
+                    <a href="https://app.fineasy.tech/register?plan=pro" class="btn btn-primary btn-block">Start 14-Day Free Trial</a>
+                </article>
+                <article class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Business</h3>
+                        <div class="price">
+                            <span class="price-amount">₹999</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        <p>For teams & enterprises</p>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Everything in Pro</li>
+                        <li><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Multi-user access</li>
+                        <li><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Role-based permissions</li>
+                        <li><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Custom branding</li>
+                        <li><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> API access</li>
+                        <li><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Dedicated support</li>
+                    </ul>
+                    <a href="https://app.fineasy.tech/register?plan=business" class="btn btn-outline btn-block">Contact Sales</a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">FAQ</span>
+                <h2>Frequently asked questions</h2>
+                <p>Got questions? We've got answers.</p>
+            </div>
+            <div class="faq-grid">
+                <details class="faq-item">
+                    <summary>Is FinEasy really free to use?</summary>
+                    <p>Yes! Our Free plan is completely free forever. You can create up to 50 invoices per month, manage 25 customers, and access basic analytics. No credit card required.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Is my data secure?</summary>
+                    <p>Absolutely. We use bank-grade 256-bit encryption to protect your data. All information is stored securely in the cloud with automatic backups. We never share your data with third parties.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Can I create GST-compliant invoices?</summary>
+                    <p>Yes! FinEasy supports GST invoicing with automatic tax calculations. You can add GSTIN, HSN codes, and generate GST-compliant invoices that meet all regulatory requirements.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Does FinEasy work on mobile?</summary>
+                    <p>Yes! FinEasy works on web, Android, and iOS. Your data syncs automatically across all devices, so you can manage your business from anywhere.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Can I send invoices via WhatsApp?</summary>
+                    <p>Yes! You can share invoices directly via WhatsApp with one click. You can also send payment reminders to customers through WhatsApp.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>How do I upgrade or cancel my plan?</summary>
+                    <p>You can upgrade, downgrade, or cancel your plan anytime from your account settings. There are no long-term contracts or cancellation fees.</p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to simplify your business finances?</h2>
+                <p>Join 10,000+ businesses already using FinEasy. Start free today — no credit card required.</p>
+                <div class="cta-buttons">
+                    <a href="https://app.fineasy.tech/register" class="btn btn-white btn-lg">
+                        Get Started Free
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                    <a href="https://app.fineasy.tech" class="btn btn-ghost-white btn-lg">Sign In</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        <svg class="logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="40" height="40" rx="10" fill="url(#logo-gradient-footer)"/>
+                            <path d="M12 14h16M12 20h12M12 26h8" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                            <defs>
+                                <linearGradient id="logo-gradient-footer" x1="0" y1="0" x2="40" y2="40">
+                                    <stop stop-color="#6366f1"/>
+                                    <stop offset="1" stop-color="#8b5cf6"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <span>FinEasy</span>
+                    </a>
+                    <p>Smart business finance management for modern businesses.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Twitter"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg></a>
+                        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zM4 6a2 2 0 100-4 2 2 0 000 4z"/></svg></a>
+                        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zM17.5 6.5h.01"/></svg></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#demo">Demo</a></li>
+                        <li><a href="https://app.fineasy.tech">Web App</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/blog">Blog</a></li>
+                        <li><a href="/careers">Careers</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="/privacy">Privacy Policy</a></li>
+                        <li><a href="/terms">Terms of Service</a></li>
+                        <li><a href="/refund">Refund Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 FinEasy. All rights reserved.</p>
+                <p>Made with ❤️ in India</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

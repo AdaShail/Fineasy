@@ -50,7 +50,6 @@ class FeatureFlagService {
 
       return false;
     } catch (e) {
-      debugPrint('Error checking feature flag $featureName: $e');
       return false;
     }
   }
@@ -90,7 +89,6 @@ class FeatureFlagService {
 
       return null;
     } catch (e) {
-      debugPrint('Error getting feature variant $featureName: $e');
       return null;
     }
   }
@@ -121,10 +119,8 @@ class FeatureFlagService {
       );
 
       if (response.statusCode != 200) {
-        debugPrint('Failed to track interaction: ${response.body}');
       }
     } catch (e) {
-      debugPrint('Error tracking interaction: $e');
     }
   }
 
@@ -154,10 +150,8 @@ class FeatureFlagService {
       );
 
       if (response.statusCode != 200) {
-        debugPrint('Failed to track conversion: ${response.body}');
       }
     } catch (e) {
-      debugPrint('Error tracking conversion: $e');
     }
   }
 
@@ -212,7 +206,6 @@ class FeatureFlagService {
         return FeatureCheckResult.fromJson(data);
       }
     } catch (e) {
-      debugPrint('Error checking feature from API: $e');
     }
     return null;
   }
@@ -245,7 +238,6 @@ class FeatureFlagService {
         }
       }
     } catch (e) {
-      debugPrint('Error getting cached result: $e');
     }
     return null;
   }
@@ -266,7 +258,6 @@ class FeatureFlagService {
 
       await prefs.setString(cacheKey, jsonEncode(cache.toJson()));
     } catch (e) {
-      debugPrint('Error caching result: $e');
     }
   }
 
@@ -276,7 +267,6 @@ class FeatureFlagService {
       final session = Supabase.instance.client.auth.currentSession;
       return session?.accessToken;
     } catch (e) {
-      debugPrint('Error getting access token: $e');
       return null;
     }
   }

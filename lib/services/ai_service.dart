@@ -29,7 +29,6 @@ class AIService {
 
       return null;
     } catch (e) {
-      debugPrint('Error processing NLP invoice: $e');
       return null;
     }
   }
@@ -54,7 +53,6 @@ class AIService {
 
       return null;
     } catch (e) {
-      debugPrint('Error extracting text from image: $e');
       return null;
     }
   }
@@ -83,7 +81,6 @@ class AIService {
 
       return null;
     } catch (e) {
-      debugPrint('Error parsing invoice from text: $e');
       return null;
     }
   }
@@ -142,7 +139,6 @@ class AIService {
 
       return null;
     } catch (e) {
-      debugPrint('Error fetching business insights: $e');
       return null;
     }
   }
@@ -163,7 +159,6 @@ class AIService {
 
       return null;
     } catch (e) {
-      debugPrint('Error fetching financial predictions: $e');
       return null;
     }
   }
@@ -184,7 +179,6 @@ class AIService {
 
       return null;
     } catch (e) {
-      debugPrint('Error analyzing transaction patterns: $e');
       return null;
     }
   }
@@ -204,7 +198,6 @@ class AIService {
 
       return [];
     } catch (e) {
-      debugPrint('Error fetching fraud alerts: $e');
       return [];
     }
   }
@@ -234,7 +227,6 @@ class AIService {
 
       return null;
     } catch (e) {
-      debugPrint('Error processing document: $e');
       return null;
     }
   }
@@ -256,7 +248,6 @@ class AIService {
 
       return [];
     } catch (e) {
-      debugPrint('Error fetching recommendations: $e');
       return [];
     }
   }
@@ -277,7 +268,6 @@ class AIService {
 
       return null;
     } catch (e) {
-      debugPrint('Error chatting with AI: $e');
       return null;
     }
   }

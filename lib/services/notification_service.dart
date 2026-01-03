@@ -1,7 +1,4 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import '../config/api_config.dart';
 
 enum NotificationType {
   info,
@@ -94,94 +91,38 @@ class NotificationService extends ChangeNotifier {
 
   /// Initialize notification service
   Future<void> initialize() async {
-    await loadNotifications();
+    // Notifications are now handled locally - no external API needed
+    // The Python backend has been removed
   }
 
   /// Load notifications from server
   Future<void> loadNotifications() async {
-    _isLoading = true;
+    // Notifications are stored locally - no external API call needed
+    // The Python backend has been removed
     notifyListeners();
-
-    try {
-      final response = await http.get(
-        Uri.parse('${ApiConfig.baseUrl}/api/v1/notifications/'),
-        headers: {'Content-Type': 'application/json'},
-      );
-
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        if (data['success'] == true) {
-          final List<dynamic> notificationsJson = data['notifications'] ?? [];
-          _notifications.clear();
-          _notifications.addAll(
-            notificationsJson.map((json) => AppNotification.fromJson(json)),
-          );
-        }
-      }
-    } catch (e) {
-      debugPrint('Error loading notifications: $e');
-    } finally {
-      _isLoading = false;
-      notifyListeners();
-    }
   }
 
   /// Mark notification as read
   Future<void> markAsRead(String notificationId) async {
-    try {
-      final response = await http.post(
-        Uri.parse(
-          '${ApiConfig.baseUrl}/api/v1/notifications/$notificationId/acknowledge',
-        ),
-        headers: {'Content-Type': 'application/json'},
-      );
-
-      if (response.statusCode == 200) {
-        final index = _notifications.indexWhere((n) => n.id == notificationId);
-        if (index != -1) {
-          _notifications[index] = _notifications[index].copyWith(isRead: true);
-          notifyListeners();
-        }
-      }
-    } catch (e) {
-      debugPrint('Error marking notification as read: $e');
+    final index = _notifications.indexWhere((n) => n.id == notificationId);
+    if (index != -1) {
+      _notifications[index] = _notifications[index].copyWith(isRead: true);
+      notifyListeners();
     }
   }
 
   /// Mark all notifications as read
   Future<void> markAllAsRead() async {
-    try {
-      final response = await http.post(
-        Uri.parse('${ApiConfig.baseUrl}/api/v1/notifications/mark-all-read'),
-        headers: {'Content-Type': 'application/json'},
-      );
-
-      if (response.statusCode == 200) {
-        for (int i = 0; i < _notifications.length; i++) {
-          _notifications[i] = _notifications[i].copyWith(isRead: true);
-        }
-        notifyListeners();
-      }
-    } catch (e) {
-      debugPrint('Error marking all notifications as read: $e');
+    for (int i = 0; i < _notifications.length; i++) {
+      _notifications[i] = _notifications[i].copyWith(isRead: true);
     }
+    notifyListeners();
   }
 
   /// Delete notification
   Future<void> deleteNotification(String notificationId) async {
-    try {
-      final response = await http.delete(
-        Uri.parse('${ApiConfig.baseUrl}/api/v1/notifications/$notificationId'),
-        headers: {'Content-Type': 'application/json'},
-      );
-
-      if (response.statusCode == 200) {
-        _notifications.removeWhere((n) => n.id == notificationId);
-        notifyListeners();
-      }
-    } catch (e) {
-      debugPrint('Error deleting notification: $e');
-    }
+    _notifications.removeWhere((n) => n.id == notificationId);
+    notifyListeners();
   }
 
   /// Add local notification (for immediate feedback)
@@ -382,41 +323,15 @@ class NotificationService extends ChangeNotifier {
     Map<String, dynamic>? data,
     String? actionUrl,
   }) async {
-    try {
-      // Send to server
-      final response = await http.post(
-        Uri.parse('${ApiConfig.baseUrl}/api/v1/notifications/send'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'title': title,
-          'message': message,
-          'type': type.toString().split('.').last,
-          'data': data,
-          'action_url': actionUrl,
-        }),
-      );
-
-      if (response.statusCode == 200) {
-        // Also add locally for immediate display
-        _addLocalNotification(
-          title: title,
-          message: message,
-          type: type,
-          data: data,
-          actionUrl: actionUrl,
-        );
-      }
-    } catch (e) {
-      debugPrint('Error sending notification: $e');
-      // Fallback to local notification
-      _addLocalNotification(
-        title: title,
-        message: message,
-        type: type,
-        data: data,
-        actionUrl: actionUrl,
-      );
-    }
+    // Add locally - no external API needed
+    _addLocalNotification(
+      title: title,
+      message: message,
+      type: type,
+      data: data,
+      actionUrl: actionUrl,
+    );
+    notifyListeners();
   }
 
   /// Add local notification (private helper method)

@@ -29,7 +29,6 @@ class DeviceSessionService {
         return '${windowsInfo.computerName}_${windowsInfo.deviceId}';
       }
     } catch (e) {
-      debugPrint('Error getting device ID: $e');
     }
 
     // Fallback to a timestamp-based ID
@@ -60,7 +59,6 @@ class DeviceSessionService {
 
       return true;
     } catch (e) {
-      debugPrint('Error registering device session: $e');
       return false;
     }
   }
@@ -83,7 +81,6 @@ class DeviceSessionService {
 
       return response != null;
     } catch (e) {
-      debugPrint('Error checking device authorization: $e');
       return false;
     }
   }
@@ -101,7 +98,6 @@ class DeviceSessionService {
           .eq('user_id', userId)
           .eq('device_id', deviceId);
     } catch (e) {
-      debugPrint('Error removing device session: $e');
     }
   }
 
@@ -117,7 +113,6 @@ class DeviceSessionService {
           .eq('user_id', userId)
           .neq('device_id', currentDeviceId);
     } catch (e) {
-      debugPrint('Error removing other device sessions: $e');
     }
   }
 
@@ -152,7 +147,6 @@ class DeviceSessionService {
         };
       }
     } catch (e) {
-      debugPrint('Error getting device info: $e');
     }
 
     return {
@@ -176,7 +170,6 @@ class DeviceSessionService {
 
       return List<Map<String, dynamic>>.from(response);
     } catch (e) {
-      debugPrint('Error getting user sessions: $e');
       return [];
     }
   }
@@ -192,7 +185,6 @@ class DeviceSessionService {
 
       return true;
     } catch (e) {
-      debugPrint('Error revoking device session: $e');
       return false;
     }
   }
@@ -210,7 +202,6 @@ class DeviceSessionService {
           .eq('user_id', userId)
           .eq('device_id', deviceId);
     } catch (e) {
-      debugPrint('Error updating last active: $e');
     }
   }
 }

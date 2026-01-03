@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import '../dashboard/dashboard_screen.dart';
+import '../../web/screens/web_dashboard_screen.dart';
 
 class MainNavigationScreen extends StatelessWidget {
   const MainNavigationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Simply return the DashboardScreen which has all the navigation built-in
-    return const DashboardScreen();
+    // Force web layout - always use web dashboard on web
+    return const WebDashboardScreen();
   }
 }

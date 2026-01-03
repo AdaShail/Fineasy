@@ -57,7 +57,6 @@ class PerformanceAnalyticsService {
       // Check for performance alerts
       await _checkPerformanceAlerts(outcome);
     } catch (e) {
-      print('Error recording decision outcome: $e');
       rethrow;
     }
   }
@@ -88,7 +87,6 @@ class PerformanceAnalyticsService {
         throw Exception('Failed to calculate ROI: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error calculating ROI: $e');
       // Return default ROI calculation
       return _calculateDefaultROI(actionId, businessId, category, costData);
     }
@@ -118,7 +116,6 @@ class PerformanceAnalyticsService {
         throw Exception('Failed to get AI metrics: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error getting AI performance metrics: $e');
       // Return default metrics
       return _generateDefaultAIMetrics(businessId, startDate, endDate);
     }
@@ -150,7 +147,6 @@ class PerformanceAnalyticsService {
         );
       }
     } catch (e) {
-      print('Error getting business impact metrics: $e');
       // Return default metrics
       return _generateDefaultBusinessMetrics(businessId, startDate, endDate);
     }
@@ -194,7 +190,6 @@ class PerformanceAnalyticsService {
         generatedAt: DateTime.now(),
       );
     } catch (e) {
-      print('Error getting dashboard data: $e');
       rethrow;
     }
   }
@@ -223,7 +218,6 @@ class PerformanceAnalyticsService {
         );
       }
     } catch (e) {
-      print('Error getting top ROI actions: $e');
       return [];
     }
   }
@@ -252,7 +246,6 @@ class PerformanceAnalyticsService {
         );
       }
     } catch (e) {
-      print('Error getting recent outcomes: $e');
       return _outcomeCache.values.take(limit).toList();
     }
   }
@@ -277,7 +270,6 @@ class PerformanceAnalyticsService {
         );
       }
     } catch (e) {
-      print('Error getting performance trends: $e');
       return _generateDefaultTrends();
     }
   }
@@ -300,7 +292,6 @@ class PerformanceAnalyticsService {
         throw Exception('Failed to get alerts: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error getting alerts: $e');
       return [];
     }
   }
@@ -322,7 +313,6 @@ class PerformanceAnalyticsService {
         throw Exception('Failed to generate report: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error generating performance report: $e');
       rethrow;
     }
   }
@@ -384,7 +374,6 @@ class PerformanceAnalyticsService {
         body: jsonEncode(outcome.toJson()),
       );
     } catch (e) {
-      print('Error sending outcome to backend: $e');
     }
   }
 

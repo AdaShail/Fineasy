@@ -78,7 +78,6 @@ class ComplianceMonitoringService {
       await _loadDataProtectionRequirements();
       await _loadIndustrySpecificRequirements(businessType);
     } catch (e) {
-      print('Error initializing compliance requirements: $e');
     }
   }
 
@@ -232,7 +231,6 @@ class ComplianceMonitoringService {
       // Monitor for regulatory changes
       await _monitorRegulatoryChanges();
     } catch (e) {
-      print('Error running compliance check: $e');
     }
   }
 
@@ -271,7 +269,6 @@ class ComplianceMonitoringService {
       // Determine overall compliance level
       level = _determineComplianceLevel(issues);
     } catch (e) {
-      print('Error checking compliance for ${requirement.id}: $e');
       level = ComplianceLevel.unknown;
     }
 
@@ -587,7 +584,6 @@ class ComplianceMonitoringService {
           await _createActionItem(issue, requirement);
       }
     } catch (e) {
-      print('Error in automated correction for ${issue.id}: $e');
     }
   }
 
@@ -600,7 +596,6 @@ class ComplianceMonitoringService {
       // 3. Generate GSTR-3B form
       // 4. Submit to GST portal (with user approval)
 
-      print('Automated GST filing initiated for issue: ${issue.id}');
 
       // For now, just mark as action taken
       await _logComplianceAction(
@@ -609,7 +604,6 @@ class ComplianceMonitoringService {
         ComplianceActionType.automated,
       );
     } catch (e) {
-      print('Error in automated GST filing: $e');
     }
   }
 
@@ -655,7 +649,6 @@ class ComplianceMonitoringService {
         metadata: {'policy_content': privacyPolicy},
       );
     } catch (e) {
-      print('Error generating privacy policy: $e');
     }
   }
 
@@ -674,7 +667,6 @@ class ComplianceMonitoringService {
         ComplianceActionType.automated,
       );
     } catch (e) {
-      print('Error setting up consent management: $e');
     }
   }
 
@@ -712,7 +704,6 @@ class ComplianceMonitoringService {
         await _processRegulatoryChange(change);
       }
     } catch (e) {
-      print('Error monitoring regulatory changes: $e');
     }
   }
 
@@ -736,7 +727,6 @@ class ComplianceMonitoringService {
       // Generate adaptation recommendations
       await _generateAdaptationPlan(change);
     } catch (e) {
-      print('Error processing regulatory change: $e');
     }
   }
 
@@ -813,7 +803,6 @@ class ComplianceMonitoringService {
     Map<String, dynamic>? metadata,
   }) async {
     // In a real implementation, this would log to database
-    print('Compliance Action: $action for issue $issueId');
   }
 
   /// Generate compliance report

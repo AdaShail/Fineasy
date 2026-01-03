@@ -637,8 +637,6 @@ class PdfService {
 
       return await pdf.save();
     } catch (e, stackTrace) {
-      debugPrint('Error generating invoice PDF: $e');
-      debugPrint('Stack trace: $stackTrace');
       rethrow;
     }
   }
@@ -923,8 +921,6 @@ class PdfService {
 
       return await pdf.save();
     } catch (e, stackTrace) {
-      debugPrint('Error generating invoice PDF with QR: $e');
-      debugPrint('Stack trace: $stackTrace');
       rethrow;
     }
   }
@@ -954,11 +950,8 @@ class PdfService {
       // Write PDF data
       await file.writeAsBytes(pdfData);
 
-      debugPrint('Invoice PDF saved to: ${file.path}');
       return file;
     } catch (e, stackTrace) {
-      debugPrint('Error saving invoice PDF on Android: $e');
-      debugPrint('Stack trace: $stackTrace');
       rethrow;
     }
   }
@@ -978,15 +971,10 @@ class PdfService {
       );
 
       if (result.status == ShareResultStatus.success) {
-        debugPrint('Invoice PDF shared successfully');
       } else if (result.status == ShareResultStatus.dismissed) {
-        debugPrint('Share cancelled by user');
       } else {
-        debugPrint('Share failed or unavailable');
       }
     } catch (e, stackTrace) {
-      debugPrint('Error sharing invoice PDF on Android: $e');
-      debugPrint('Stack trace: $stackTrace');
       rethrow;
     }
   }
@@ -1013,10 +1001,6 @@ class PdfService {
       attempt++;
 
       try {
-        debugPrint(
-          'Attempting to generate invoice PDF (attempt $attempt/$maxRetries)',
-        );
-
         // Generate PDF based on type
         final Uint8List pdfData;
         if (includeQR) {
@@ -1034,7 +1018,6 @@ class PdfService {
           );
         }
 
-        debugPrint('Invoice PDF generated successfully');
 
         return PdfGenerationResult(
           success: true,
@@ -1044,16 +1027,12 @@ class PdfService {
       } on OutOfMemoryError catch (e, stackTrace) {
         lastError = e;
         errorDetails = 'Out of memory while generating PDF';
-        debugPrint('OutOfMemoryError on attempt $attempt: $e');
-        debugPrint('Stack trace: $stackTrace');
 
         // Don't retry on memory errors
         break;
       } on FileSystemException catch (e, stackTrace) {
         lastError = e;
         errorDetails = 'File system error: ${e.message}';
-        debugPrint('FileSystemException on attempt $attempt: $e');
-        debugPrint('Stack trace: $stackTrace');
 
         // Wait before retry
         if (attempt < maxRetries) {
@@ -1062,8 +1041,6 @@ class PdfService {
       } catch (e, stackTrace) {
         lastError = e;
         errorDetails = 'Unexpected error: ${e.toString()}';
-        debugPrint('Error on attempt $attempt: $e');
-        debugPrint('Stack trace: $stackTrace');
 
         // Wait before retry
         if (attempt < maxRetries) {
@@ -1074,8 +1051,6 @@ class PdfService {
 
     // All retries failed
     final errorMessage = _getUserFriendlyErrorMessage(lastError, errorDetails);
-    debugPrint('Failed to generate invoice PDF after $maxRetries attempts');
-    debugPrint('Final error: $errorDetails');
 
     return PdfGenerationResult(
       success: false,
@@ -1119,10 +1094,7 @@ class PdfService {
           generationResult.pdfData!,
           invoice.invoiceNumber,
         );
-        debugPrint('PDF saved successfully: ${savedFile.path}');
       } catch (e, stackTrace) {
-        debugPrint('Error saving PDF: $e');
-        debugPrint('Stack trace: $stackTrace');
         return PdfShareResult(
           success: false,
           message: 'Failed to save PDF file',
@@ -1140,8 +1112,6 @@ class PdfService {
           filePath: savedFile.path,
         );
       } catch (e, stackTrace) {
-        debugPrint('Error sharing PDF: $e');
-        debugPrint('Stack trace: $stackTrace');
 
         // PDF is saved even if sharing failed
         return PdfShareResult(
@@ -1153,8 +1123,6 @@ class PdfService {
         );
       }
     } catch (e, stackTrace) {
-      debugPrint('Unexpected error in saveAndShareInvoicePdf: $e');
-      debugPrint('Stack trace: $stackTrace');
 
       return PdfShareResult(
         success: false,

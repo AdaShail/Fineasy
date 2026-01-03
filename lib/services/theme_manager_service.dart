@@ -73,7 +73,7 @@ class ThemeManagerService {
   static Future<bool> setPrimaryColor(Color color) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      return await prefs.setInt(_primaryColorKey, color.value);
+      return await prefs.setInt(_primaryColorKey, color.toARGB32());
     } catch (e) {
       return false;
     }
@@ -97,7 +97,7 @@ class ThemeManagerService {
   static Future<bool> setAccentColor(Color color) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      return await prefs.setInt(_accentColorKey, color.value);
+      return await prefs.setInt(_accentColorKey, color.toARGB32());
     } catch (e) {
       return false;
     }
@@ -174,7 +174,7 @@ class ThemeManagerService {
       appBarTheme: AppBarTheme(
         elevation: 0,
         centerTitle: true,
-        backgroundColor: primaryColor.withOpacity(0.8),
+        backgroundColor: primaryColor.withValues(alpha: 0.8),
       ),
       cardTheme: CardThemeData(
         elevation: 2,

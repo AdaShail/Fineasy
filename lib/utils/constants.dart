@@ -2,10 +2,15 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AppConstants {
   // Supabase Configuration
-  static String get supabaseUrl => dotenv.env['SUPABASE_URL'] ?? '';
-  static String get supabaseAnonKey => dotenv.env['SUPABASE_ANON_KEY'] ?? '';
+  static String get supabaseUrl => 
+      dotenv.env['SUPABASE_URL'] ?? 
+      const String.fromEnvironment('SUPABASE_URL', defaultValue: 'https://jfsbkeljaslollwkyxia.supabase.co');
+  static String get supabaseAnonKey => 
+      dotenv.env['SUPABASE_ANON_KEY'] ?? 
+      const String.fromEnvironment('SUPABASE_ANON_KEY', defaultValue: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impmc2JrZWxqYXNsb2xsd2t5eGlhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzNTQ3ODgsImV4cCI6MjA3MDkzMDc4OH0.f19Lrtw1m5qitFXWOTKe8wPv7blsAbJq-eBKddbU-1E');
   static String get supabaseServiceRoleKey =>
-      dotenv.env['SUPABASE_SERVICE_ROLE_KEY'] ?? '';
+      dotenv.env['SUPABASE_SERVICE_ROLE_KEY'] ?? 
+      const String.fromEnvironment('SUPABASE_SERVICE_ROLE_KEY', defaultValue: '');
 
   // Firebase Configuration
   static String get firebaseProjectId =>

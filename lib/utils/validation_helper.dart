@@ -13,35 +13,25 @@ class ValidationHelper {
   static bool validateAllImports() {
     try {
       // Test core Flutter functionality
-      debugPrint('✅ Flutter core imports validated');
 
       // Test Provider state management
-      debugPrint('✅ Provider state management validated');
 
       // Test Supabase integration
-      debugPrint('✅ Supabase integration validated');
 
       // Test Firebase integration
-      debugPrint('✅ Firebase integration validated');
 
       // Test connectivity
-      debugPrint('✅ Connectivity plus validated');
 
       // Test notifications
-      debugPrint('✅ Notification services validated');
 
       // Test PDF generation
-      debugPrint('✅ PDF generation validated');
 
       // Test file handling
-      debugPrint('✅ File handling validated');
 
       // Test date/time utilities
-      debugPrint('✅ Date/time utilities validated');
 
       return true;
     } catch (e) {
-      debugPrint('❌ Validation failed: $e');
       return false;
     }
   }
@@ -50,26 +40,21 @@ class ValidationHelper {
     try {
       // Test SharedPreferences
       await SharedPreferences.getInstance();
-      debugPrint('✅ SharedPreferences available');
 
       // Test connectivity
       final connectivity = Connectivity();
       final results = await connectivity.checkConnectivity();
-      debugPrint('✅ Connectivity check: $results');
 
       // Test UUID generation
       const uuid = Uuid();
       final testId = uuid.v4();
-      debugPrint('✅ UUID generation: $testId');
 
       // Test date formatting
       final formatter = DateFormat('dd/MM/yyyy');
       final formattedDate = formatter.format(DateTime.now());
-      debugPrint('✅ Date formatting: $formattedDate');
 
       return true;
     } catch (e) {
-      debugPrint('❌ Runtime validation failed: $e');
       return false;
     }
   }
@@ -98,22 +83,6 @@ class ValidationHelper {
   }
 
   static void printSystemInfo() {
-    debugPrint('🚀 Fineasy App System Validation');
-    debugPrint('================================');
-    debugPrint('✅ All critical errors fixed');
-    debugPrint('✅ All imports validated');
-    debugPrint('✅ All providers configured');
-    debugPrint('✅ All services implemented');
-    debugPrint('✅ Database schema ready');
-    debugPrint('✅ Real-time sync configured');
-    debugPrint('✅ Offline support enabled');
-    debugPrint('✅ Push notifications ready');
-    debugPrint('✅ PDF reports functional');
-    debugPrint('✅ Multi-device sync ready');
-    debugPrint('✅ Security policies active');
-    debugPrint('✅ Performance optimized');
-    debugPrint('================================');
-    debugPrint('🎉 Ready for production deployment!');
   }
 }
 

@@ -874,7 +874,6 @@ class _InvoiceCreationScreenState extends State<InvoiceCreationScreen> {
         }
       }
     } catch (e) {
-      debugPrint('Error sending WhatsApp message: $e');
     }
   }
 

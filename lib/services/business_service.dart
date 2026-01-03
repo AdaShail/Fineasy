@@ -7,7 +7,6 @@ class BusinessService {
 
   Future<BusinessModel?> getBusinessByUserId(String userId) async {
     try {
-      debugPrint('Looking for business with user_id: $userId');
 
       final response =
           await _supabase
@@ -16,10 +15,8 @@ class BusinessService {
               .eq('user_id', userId)
               .single();
 
-      debugPrint('Found business: ${response['id']} for user: $userId');
       return BusinessModel.fromJson(response);
     } catch (e) {
-      debugPrint('Business lookup failed for user $userId: $e');
 
       if (e.toString().contains('No rows found')) {
         return null;

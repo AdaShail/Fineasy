@@ -19,7 +19,6 @@ class EncryptedDatabaseService {
   Future<void> initialize() async {
     await _encryptionService.initialize();
     await _getDatabase();
-    debugPrint('Encrypted database service initialized');
   }
 
   Future<Database> _getDatabase() async {
@@ -58,11 +57,9 @@ class EncryptedDatabaseService {
       ON encrypted_data(table_name)
     ''');
 
-    debugPrint('Database tables created');
   }
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    debugPrint('Upgrading database from version $oldVersion to $newVersion');
     // Handle database migrations here
   }
 
@@ -96,7 +93,6 @@ class EncryptedDatabaseService {
         'updated_at': now,
       }, conflictAlgorithm: ConflictAlgorithm.replace);
     } catch (e) {
-      debugPrint('Failed to insert encrypted data: $e');
       rethrow;
     }
   }
@@ -130,7 +126,6 @@ class EncryptedDatabaseService {
         whereArgs: [id, tableName],
       );
     } catch (e) {
-      debugPrint('Failed to update encrypted data: $e');
       rethrow;
     }
   }
@@ -165,7 +160,6 @@ class EncryptedDatabaseService {
 
       return data;
     } catch (e) {
-      debugPrint('Failed to query encrypted data: $e');
       return null;
     }
   }
@@ -204,7 +198,6 @@ class EncryptedDatabaseService {
 
       return decryptedResults;
     } catch (e) {
-      debugPrint('Failed to query all encrypted data: $e');
       return [];
     }
   }
@@ -223,7 +216,6 @@ class EncryptedDatabaseService {
         whereArgs: [id, tableName],
       );
     } catch (e) {
-      debugPrint('Failed to delete encrypted data: $e');
       rethrow;
     }
   }
@@ -239,7 +231,6 @@ class EncryptedDatabaseService {
         whereArgs: [tableName],
       );
     } catch (e) {
-      debugPrint('Failed to delete all data for table: $e');
       rethrow;
     }
   }
@@ -280,7 +271,6 @@ class EncryptedDatabaseService {
 
       await batch.commit(noResult: true);
     } catch (e) {
-      debugPrint('Failed to batch insert encrypted data: $e');
       rethrow;
     }
   }
@@ -290,7 +280,6 @@ class EncryptedDatabaseService {
     if (_database != null && _database!.isOpen) {
       await _database!.close();
       _database = null;
-      debugPrint('Database closed');
     }
   }
 
@@ -299,9 +288,7 @@ class EncryptedDatabaseService {
     try {
       final db = await _getDatabase();
       await db.delete('encrypted_data');
-      debugPrint('All encrypted data cleared');
     } catch (e) {
-      debugPrint('Failed to clear all data: $e');
       rethrow;
     }
   }

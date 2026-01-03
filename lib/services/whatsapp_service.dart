@@ -24,7 +24,6 @@ class WhatsAppService {
         dueDate: dueDate,
       );
     } catch (e) {
-      print('Error sending receivable reminder: $e');
       return false;
     }
   }
@@ -45,7 +44,6 @@ class WhatsAppService {
         transactionId: transactionId,
       );
     } catch (e) {
-      print('Error sending payment confirmation: $e');
       return false;
     }
   }
@@ -66,7 +64,6 @@ class WhatsAppService {
         amount: amount,
       );
     } catch (e) {
-      print('Error sending invoice: $e');
       return false;
     }
   }
@@ -85,7 +82,6 @@ class WhatsAppService {
       }
       return [];
     } catch (e) {
-      print('Error getting templates: $e');
       return [];
     }
   }
@@ -113,7 +109,6 @@ class WhatsAppService {
       }
       return false;
     } catch (e) {
-      print('Error sending template: $e');
       return false;
     }
   }
@@ -130,7 +125,6 @@ class WhatsAppService {
         message: message,
       );
     } catch (e) {
-      print('Error sending custom message: $e');
       return false;
     }
   }
@@ -166,7 +160,6 @@ class WhatsAppService {
         dueDate: dueDate,
       );
     } catch (e) {
-      print('Error sending payment reminder: $e');
       return false;
     }
   }
@@ -197,7 +190,6 @@ Thank you!
         message: message,
       );
     } catch (e) {
-      print('Error sending payment request: $e');
       return false;
     }
   }
@@ -220,7 +212,6 @@ Thank you!
       }
       return [];
     } catch (e) {
-      print('Error getting message history: $e');
       return [];
     }
   }
@@ -244,7 +235,6 @@ Thank you!
       }
       return false;
     } catch (e) {
-      print('Error saving template: $e');
       return false;
     }
   }
@@ -259,7 +249,6 @@ Thank you!
 
       return response.statusCode == 200;
     } catch (e) {
-      print('Error deleting template: $e');
       return false;
     }
   }
@@ -272,7 +261,6 @@ Thank you!
     String? attachmentUrl,
   }) async {
     if (phoneNumber.isEmpty) {
-      print('Phone number is empty, cannot send WhatsApp message');
       return false;
     }
 
@@ -292,11 +280,9 @@ Thank you!
         final data = jsonDecode(response.body);
         return data['success'] == true;
       } else {
-        print('WhatsApp API error: ${response.statusCode} - ${response.body}');
         return false;
       }
     } catch (e) {
-      print('WhatsApp service error: $e');
       return false;
     }
   }
@@ -432,7 +418,6 @@ Thank you for your business!
         },
       ];
     } catch (e) {
-      print('Error getting recent messages: $e');
       return [];
     }
   }

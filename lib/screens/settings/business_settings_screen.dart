@@ -302,12 +302,9 @@ class _BusinessSettingsScreenState extends State<BusinessSettingsScreen> {
       try {
         if (currentBusiness == null) {
           // Create new business - get current user ID from Supabase
-          debugPrint('DEBUG: Creating new business...');
           final user = Supabase.instance.client.auth.currentUser;
-          debugPrint('DEBUG: Current user: ${user?.email ?? 'null'}');
 
           if (user == null) {
-            debugPrint('ERROR: User not authenticated');
             throw Exception('User not authenticated - please sign in again');
           }
 
@@ -343,11 +340,7 @@ class _BusinessSettingsScreenState extends State<BusinessSettingsScreen> {
             updatedAt: DateTime.now(),
           );
 
-          debugPrint(
-            'DEBUG: Calling createBusiness with data: ${newBusiness.name}',
-          );
           success = await businessProvider.createBusiness(newBusiness);
-          debugPrint('DEBUG: createBusiness result: $success');
 
           message =
               success
@@ -391,7 +384,6 @@ class _BusinessSettingsScreenState extends State<BusinessSettingsScreen> {
                   : 'Failed to update business';
         }
       } catch (e) {
-        debugPrint('ERROR: Business save failed: $e');
         success = false;
 
         // Provide specific error messages

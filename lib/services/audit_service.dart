@@ -48,12 +48,8 @@ class AuditService {
 
       _auditTrails[auditTrail.id] = auditTrail;
 
-      debugPrint(
-        'Audit event logged: ${auditTrail.eventType} for ${auditTrail.entityType}:${auditTrail.entityId}',
-      );
       return auditTrail.id;
     } catch (e) {
-      debugPrint('Error logging audit event: $e');
       return null;
     }
   }
@@ -302,7 +298,6 @@ class AuditService {
       _decisionExplanations[decisionId] = explanation;
       return decisionId;
     } catch (e) {
-      debugPrint('Error creating decision explanation: $e');
       return null;
     }
   }
@@ -317,7 +312,6 @@ class AuditService {
       }
       return null;
     } catch (e) {
-      debugPrint('Error getting decision explanation: $e');
       return null;
     }
   }
@@ -382,7 +376,6 @@ class AuditService {
 
       return results.sublist(startIndex, endIndex);
     } catch (e) {
-      debugPrint('Error searching audit trails: $e');
       return [];
     }
   }
@@ -392,7 +385,6 @@ class AuditService {
     try {
       return _auditTrails[auditId];
     } catch (e) {
-      debugPrint('Error getting audit trail: $e');
       return null;
     }
   }
@@ -414,7 +406,6 @@ class AuditService {
           .toList()
         ..sort((a, b) => b.timestamp.compareTo(a.timestamp));
     } catch (e) {
-      debugPrint('Error getting audit trails for entity: $e');
       return [];
     }
   }
@@ -482,7 +473,6 @@ class AuditService {
         'generated_at': DateTime.now().toIso8601String(),
       };
     } catch (e) {
-      debugPrint('Error generating compliance report: $e');
       return {};
     }
   }
@@ -542,7 +532,6 @@ class AuditService {
 
       return audit.id;
     } catch (e) {
-      debugPrint('Error creating algorithmic audit: $e');
       return null;
     }
   }
@@ -582,7 +571,6 @@ class AuditService {
       results.sort((a, b) => b.conductedAt.compareTo(a.conductedAt));
       return results;
     } catch (e) {
-      debugPrint('Error getting algorithmic audits: $e');
       return [];
     }
   }
@@ -624,7 +612,6 @@ class AuditService {
         'audit_trails': filteredTrails.map((trail) => trail.toJson()).toList(),
       };
     } catch (e) {
-      debugPrint('Error exporting audit data: $e');
       return {};
     }
   }
@@ -671,7 +658,6 @@ class AuditService {
         },
       };
     } catch (e) {
-      debugPrint('Error getting audit statistics: $e');
       return {};
     }
   }

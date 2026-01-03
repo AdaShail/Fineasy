@@ -16,7 +16,6 @@ class AuthService {
   );
   final _deviceSessionService = DeviceSessionService();
   Future<bool> signInWithEmail(String email, String password) async {
-    debugPrint("Attempting login with $email / $password");
     try {
       final response = await _supabase.auth.signInWithPassword(
         email: email,
@@ -45,7 +44,6 @@ class AuthService {
       }
       return false;
     } catch (e) {
-      debugPrint("Sign in failed: $e");
       throw Exception('Failed to sign in: ${e.toString()}');
     }
   }
@@ -76,7 +74,6 @@ class AuthService {
     String name,
   ) async {
     try {
-      debugPrint("Attempting signup with email: $email");
 
       final response = await _supabase.auth.signUp(
         email: email,
@@ -84,12 +81,8 @@ class AuthService {
         data: {'name': name},
       );
 
-      debugPrint(
-        "Signup response: ${response.user != null ? 'Success' : 'Failed'}",
-      );
       return response.user != null;
     } catch (e) {
-      debugPrint("Signup error details: $e");
       throw Exception('Failed to sign up: ${e.toString()}');
     }
   }

@@ -31,7 +31,6 @@ class NotificationProvider extends ChangeNotifier {
       _isInitialized = true;
       notifyListeners();
     } catch (e) {
-      debugPrint('Failed to initialize notifications: $e');
     }
   }
 

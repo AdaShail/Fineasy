@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
 import '../models/recurring_payment_model.dart';
@@ -43,7 +44,6 @@ class RecurringPaymentService {
 
       return RecurringPaymentModel.fromJson(response);
     } catch (e) {
-      print('Error creating recurring payment: $e');
       rethrow; // Rethrow to show actual error to user
     }
   }
@@ -62,7 +62,6 @@ class RecurringPaymentService {
 
       return RecurringPaymentModel.fromJson(response);
     } catch (e) {
-      print('Error fetching recurring payment: $e');
       return null;
     }
   }
@@ -93,7 +92,6 @@ class RecurringPaymentService {
           .map((json) => RecurringPaymentModel.fromJson(json))
           .toList();
     } catch (e) {
-      print('Error fetching recurring payments: $e');
       return [];
     }
   }
@@ -113,7 +111,6 @@ class RecurringPaymentService {
 
       return await getRecurringPaymentById(recurringPayment.id);
     } catch (e) {
-      print('Error updating recurring payment: $e');
       return null;
     }
   }
@@ -124,7 +121,6 @@ class RecurringPaymentService {
       await _supabase.from('recurring_payments').delete().eq('id', id);
       return true;
     } catch (e) {
-      print('Error deleting recurring payment: $e');
       return false;
     }
   }
@@ -141,7 +137,6 @@ class RecurringPaymentService {
           .eq('id', id);
       return true;
     } catch (e) {
-      print('Error pausing recurring payment: $e');
       return false;
     }
   }
@@ -158,7 +153,6 @@ class RecurringPaymentService {
           .eq('id', id);
       return true;
     } catch (e) {
-      print('Error resuming recurring payment: $e');
       return false;
     }
   }
@@ -175,17 +169,30 @@ class RecurringPaymentService {
           .eq('id', id);
       return true;
     } catch (e) {
-      print('Error cancelling recurring payment: $e');
       return false;
     }
   }
 
   // ============ OCCURRENCE GENERATION ============
 
+  // Track last processing time to prevent duplicate runs
+  static DateTime? _lastProcessingTime;
+  static const _minProcessingInterval = Duration(minutes: 1);
+
   /// Process all active recurring payments and generate occurrences
   static Future<int> processRecurringPayments({
     required String businessId,
   }) async {
+    // Prevent duplicate processing within 1 minute
+    if (_lastProcessingTime != null) {
+      final timeSinceLastRun = DateTime.now().difference(_lastProcessingTime!);
+      if (timeSinceLastRun < _minProcessingInterval) {
+        return 0;
+      }
+    }
+    
+    _lastProcessingTime = DateTime.now();
+    
     try {
       // Get all active recurring payments
       final recurringPayments = await getRecurringPayments(
@@ -196,19 +203,46 @@ class RecurringPaymentService {
       int generatedCount = 0;
 
       for (final recurring in recurringPayments) {
-        if (recurring.shouldGenerateNext()) {
-          final success = await generateOccurrence(recurring);
-          if (success) {
-            generatedCount++;
-          }
-        }
+        // Generate ALL due occurrences (not just one)
+        int occurrencesForThis = await _generateAllDueOccurrences(recurring);
+        generatedCount += occurrencesForThis;
       }
 
       return generatedCount;
     } catch (e) {
-      print('Error processing recurring payments: $e');
       return 0;
     }
+  }
+
+  /// Generate all due occurrences for a recurring payment
+  static Future<int> _generateAllDueOccurrences(
+    RecurringPaymentModel recurring,
+  ) async {
+    int count = 0;
+    
+    // Reload the recurring payment to get latest state
+    var currentRecurring = await getRecurringPaymentById(recurring.id);
+    if (currentRecurring == null) return 0;
+    
+    // Keep generating while there are due occurrences
+    while (currentRecurring!.shouldGenerateNext()) {
+      final success = await generateOccurrence(currentRecurring);
+      if (success) {
+        count++;
+        // Reload to get updated lastGeneratedDate and occurrencesGenerated
+        currentRecurring = await getRecurringPaymentById(recurring.id);
+        if (currentRecurring == null) break;
+      } else {
+        break; // Stop if generation fails
+      }
+      
+      // Safety limit to prevent infinite loops
+      if (count >= 12) {
+        break;
+      }
+    }
+    
+    return count;
   }
 
   /// Generate next occurrence for a recurring payment
@@ -300,7 +334,6 @@ class RecurringPaymentService {
 
       return true;
     } catch (e) {
-      print('Error generating occurrence: $e');
       return false;
     }
   }
@@ -359,7 +392,6 @@ class RecurringPaymentService {
 
       return await InvoiceService.createInvoice(invoice);
     } catch (e) {
-      print('Error generating invoice for occurrence: $e');
       return null;
     }
   }
@@ -381,7 +413,6 @@ class RecurringPaymentService {
           .map((json) => RecurringPaymentOccurrence.fromJson(json))
           .toList();
     } catch (e) {
-      print('Error fetching occurrences: $e');
       return [];
     }
   }
@@ -417,7 +448,6 @@ class RecurringPaymentService {
           .map((json) => RecurringPaymentOccurrence.fromJson(json))
           .toList();
     } catch (e) {
-      print('Error fetching business occurrences: $e');
       return [];
     }
   }
@@ -435,7 +465,6 @@ class RecurringPaymentService {
           .eq('id', occurrenceId);
       return true;
     } catch (e) {
-      print('Error marking occurrence as paid: $e');
       return false;
     }
   }
@@ -478,7 +507,6 @@ class RecurringPaymentService {
         'upcoming_count': occurrences.length,
       };
     } catch (e) {
-      print('Error fetching recurring payment stats: $e');
       return {};
     }
   }

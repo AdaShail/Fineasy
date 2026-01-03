@@ -17,11 +17,9 @@ class WhatsAppLauncherService {
       if (await canLaunchUrl(uri)) {
         return await launchUrl(uri, mode: LaunchMode.externalApplication);
       } else {
-        print('Could not launch WhatsApp URL: $whatsappUrl');
         return false;
       }
     } catch (e) {
-      print('Error launching WhatsApp: $e');
       return false;
     }
   }
@@ -184,7 +182,6 @@ class WhatsAppLauncherService {
       final webUri = Uri.parse(webUrl);
       await launchUrl(webUri, mode: LaunchMode.externalApplication);
     } catch (e) {
-      print('Error opening WhatsApp store: $e');
     }
   }
 

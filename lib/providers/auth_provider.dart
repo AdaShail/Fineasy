@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/user_model.dart';
 import '../services/auth_service.dart';
+import '../services/cross_platform_sync_service.dart';
+import '../services/web_session_service.dart';
 import '../utils/logger.dart';
 
 class AuthProvider extends ChangeNotifier {
   final AuthService _authService = AuthService();
+  final CrossPlatformSyncService _syncService = CrossPlatformSyncService();
+  final WebSessionService _sessionService = WebSessionService();
+  
   UserModel? _user;
   bool _isLoading = false;
   String? _error;
@@ -115,6 +121,19 @@ class AuthProvider extends ChangeNotifier {
       if (success) {
         _isAuthenticated = true;
         await _loadUserProfile();
+        
+        // Start session and sync for web platform
+        if (kIsWeb && _user != null) {
+          try {
+            await _sessionService.startSession(_user!.id);
+            await _syncService.startRealtimeSync(_user!.id);
+            logger.i('Session and sync started for web platform');
+          } catch (e) {
+            logger.w('Failed to start session/sync: $e');
+            // Don't fail the login if session/sync fails
+          }
+        }
+        
         logger.i('User signed in successfully with email');
       } else {
         _error = 'Sign in failed. Please check your credentials.';
@@ -202,6 +221,18 @@ class AuthProvider extends ChangeNotifier {
   Future<void> signOut() async {
     _setLoading(true);
     try {
+      // Stop session and sync for web platform
+      if (kIsWeb) {
+        try {
+          await _sessionService.endSession();
+          await _syncService.stopRealtimeSync();
+          logger.i('Session and sync stopped for web platform');
+        } catch (e) {
+          logger.w('Failed to stop session/sync: $e');
+          // Continue with sign out even if this fails
+        }
+      }
+      
       await _authService.signOut();
       _isAuthenticated = false;
       _user = null;

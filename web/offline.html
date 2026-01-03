@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0175C2">
+    <title>FinEasy - Offline</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0175C2 0%, #01579B 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .offline-container {
+            background: white;
+            border-radius: 16px;
+            padding: 48px 32px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .offline-icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 24px;
+            background: #f5f5f5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+        }
+
+        h1 {
+            color: #0175C2;
+            font-size: 28px;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        p {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            color: #856404;
+            font-size: 14px;
+            margin-bottom: 32px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #ffc107;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .retry-button {
+            background: #0175C2;
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .retry-button:hover {
+            background: #01579B;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(1, 117, 194, 0.3);
+        }
+
+        .retry-button:active {
+            transform: translateY(0);
+        }
+
+        .features {
+            margin-top: 32px;
+            padding-top: 32px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .features h2 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .feature-list {
+            list-style: none;
+            text-align: left;
+        }
+
+        .feature-list li {
+            padding: 8px 0;
+            color: #666;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .feature-list li::before {
+            content: "✓";
+            color: #4caf50;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .retry-button.loading .spinner {
+            display: block;
+        }
+
+        .retry-button.loading .button-text {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .offline-container {
+                padding: 32px 24px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .offline-icon {
+                width: 100px;
+                height: 100px;
+                font-size: 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="offline-icon">
+            📡
+        </div>
+        
+        <h1>You're Offline</h1>
+        
+        <p>
+            It looks like you've lost your internet connection. 
+            Don't worry, your data is safe and will sync automatically when you're back online.
+        </p>
+
+        <div class="status">
+            <span class="status-dot"></span>
+            <span>Waiting for connection...</span>
+        </div>
+
+        <button class="retry-button" onclick="retryConnection()">
+            <span class="button-text">Try Again</span>
+            <span class="spinner"></span>
+        </button>
+
+        <div class="features">
+            <h2>While You're Offline</h2>
+            <ul class="feature-list">
+                <li>View cached data and recent transactions</li>
+                <li>Your changes will be saved locally</li>
+                <li>Automatic sync when connection returns</li>
+                <li>All your data remains secure</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Check connection status
+        function checkConnection() {
+            return navigator.onLine;
+        }
+
+        // Retry connection
+        function retryConnection() {
+            const button = document.querySelector('.retry-button');
+            button.classList.add('loading');
+
+            if (checkConnection()) {
+                // Connection is back, reload the page
+                window.location.reload();
+            } else {
+                // Still offline, show message
+                setTimeout(() => {
+                    button.classList.remove('loading');
+                    alert('Still offline. Please check your internet connection.');
+                }, 1000);
+            }
+        }
+
+        // Listen for online event
+        window.addEventListener('online', () => {
+            console.log('Connection restored');
+            // Automatically reload when connection is restored
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        });
+
+        // Listen for offline event
+        window.addEventListener('offline', () => {
+            console.log('Connection lost');
+        });
+
+        // Update status indicator
+        function updateStatus() {
+            const statusText = document.querySelector('.status span:last-child');
+            if (checkConnection()) {
+                statusText.textContent = 'Connection restored!';
+                statusText.parentElement.style.background = '#d4edda';
+                statusText.parentElement.style.borderColor = '#28a745';
+                statusText.parentElement.style.color = '#155724';
+                document.querySelector('.status-dot').style.background = '#28a745';
+            }
+        }
+
+        // Check status periodically
+        setInterval(updateStatus, 2000);
+    </script>
+</body>
+</html>

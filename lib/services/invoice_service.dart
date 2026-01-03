@@ -26,7 +26,6 @@ class InvoiceService {
       // Get current user
       final user = _supabase.auth.currentUser;
       if (user == null) {
-        print('Error: User not authenticated');
         return null;
       }
 
@@ -68,7 +67,6 @@ class InvoiceService {
 
       return await getInvoiceById(createdInvoice.id);
     } catch (e) {
-      print('Error creating invoice: $e');
       return null;
     }
   }
@@ -85,13 +83,11 @@ class InvoiceService {
     try {
       // Validate transaction has required fields
       if (transaction.customerId == null && transaction.supplierId == null) {
-        print('Error: Transaction must have either customerId or supplierId');
         return null;
       }
 
       // CRITICAL: Prevent multiple invoices for same transaction
       if (transaction.invoiceId != null && transaction.invoiceId!.isNotEmpty) {
-        print('Error: Transaction already has an invoice (${transaction.invoiceId})');
         return null;
       }
 
@@ -103,7 +99,6 @@ class InvoiceService {
           .limit(1);
 
       if (existingInvoices.isNotEmpty) {
-        print('Error: Invoice already exists for transaction ${transaction.id}');
         return null;
       }
 
@@ -159,7 +154,6 @@ class InvoiceService {
       // Create invoice with transaction linking
       return await createInvoice(invoice, transactionId: transaction.id);
     } catch (e) {
-      print('Error creating invoice from transaction: $e');
       return null;
     }
   }
@@ -219,19 +213,17 @@ class InvoiceService {
             newStatus: invoice.status,
           );
         } catch (syncError) {
-          print('Warning: Failed to sync related entities: $syncError');
           // Continue even if sync fails - invoice is already updated
         }
       }
 
       return updatedInvoice;
     } catch (e) {
-      print('Error updating invoice: $e');
       return null;
     }
   }
 
-  /// Get invoice by ID with items
+  /// Get invoice by ID with items and groups
   static Future<InvoiceModel?> getInvoiceById(String invoiceId) async {
     try {
       final response =
@@ -248,6 +240,7 @@ class InvoiceService {
           .from('invoice_items')
           .select()
           .eq('invoice_id', invoiceId)
+          .order('sort_order')
           .order('created_at');
 
       final items =
@@ -255,9 +248,26 @@ class InvoiceService {
               .map((json) => InvoiceItemModel.fromJson(json))
               .toList();
 
-      return invoice.copyWith(items: items);
+      // Get item groups
+      final groupsResponse = await _supabase
+          .from('invoice_item_groups')
+          .select()
+          .eq('invoice_id', invoiceId)
+          .order('sort_order');
+
+      final groups =
+          (groupsResponse as List)
+              .map((json) => InvoiceItemGroup.fromJson(json))
+              .toList();
+
+      // Assign items to their groups
+      final groupsWithItems = groups.map((group) {
+        final groupItems = items.where((item) => item.groupId == group.id).toList();
+        return group.copyWith(items: groupItems);
+      }).toList();
+
+      return invoice.copyWith(items: items, itemGroups: groupsWithItems);
     } catch (e) {
-      print('Error fetching invoice: $e');
       return null;
     }
   }
@@ -304,7 +314,6 @@ class InvoiceService {
         lastPaymentDate: lastPaymentDate,
       );
     } catch (e) {
-      print('Error fetching invoice with payment history: $e');
       return null;
     }
   }
@@ -361,7 +370,6 @@ class InvoiceService {
           .map((json) => InvoiceModel.fromJson(json))
           .toList();
     } catch (e) {
-      print('Error fetching invoices: $e');
       return [];
     }
   }
@@ -380,7 +388,6 @@ class InvoiceService {
 
       return true;
     } catch (e) {
-      print('Error deleting invoice: $e');
       return false;
     }
   }
@@ -407,7 +414,6 @@ class InvoiceService {
         await _supabase.from('invoice_items').insert(itemsData);
       }
     } catch (e) {
-      print('Error creating invoice items: $e');
     }
   }
 
@@ -426,7 +432,418 @@ class InvoiceService {
       // Create new items
       await _createInvoiceItems(invoiceId, items);
     } catch (e) {
-      print('Error updating invoice items: $e');
+    }
+  }
+
+  // ============ ITEM GROUPS MANAGEMENT ============
+
+  /// Create item groups for an invoice
+  static Future<List<InvoiceItemGroup>> createItemGroups(
+    String invoiceId,
+    List<InvoiceItemGroup> groups,
+  ) async {
+    try {
+      final createdGroups = <InvoiceItemGroup>[];
+      
+      for (final group in groups) {
+        final groupData = group.toJson();
+        groupData.remove('id');
+        groupData['invoice_id'] = invoiceId;
+        groupData['created_at'] = DateTime.now().toIso8601String();
+        groupData['updated_at'] = DateTime.now().toIso8601String();
+        
+        final response = await _supabase
+            .from('invoice_item_groups')
+            .insert(groupData)
+            .select()
+            .single();
+        
+        createdGroups.add(InvoiceItemGroup.fromJson(response));
+      }
+      
+      return createdGroups;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  /// Get item groups for an invoice
+  static Future<List<InvoiceItemGroup>> getItemGroups(String invoiceId) async {
+    try {
+      final response = await _supabase
+          .from('invoice_item_groups')
+          .select()
+          .eq('invoice_id', invoiceId)
+          .order('sort_order');
+
+      final groups = (response as List)
+          .map((json) => InvoiceItemGroup.fromJson(json))
+          .toList();
+
+      // Load items for each group
+      for (int i = 0; i < groups.length; i++) {
+        final items = await _supabase
+            .from('invoice_items')
+            .select()
+            .eq('group_id', groups[i].id)
+            .order('sort_order');
+        
+        groups[i] = groups[i].copyWith(
+          items: (items as List)
+              .map((json) => InvoiceItemModel.fromJson(json))
+              .toList(),
+        );
+      }
+
+      return groups;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  /// Update an item group
+  static Future<InvoiceItemGroup?> updateItemGroup(InvoiceItemGroup group) async {
+    try {
+      final groupData = group.toJson();
+      groupData.remove('created_at');
+      groupData['updated_at'] = DateTime.now().toIso8601String();
+
+      final response = await _supabase
+          .from('invoice_item_groups')
+          .update(groupData)
+          .eq('id', group.id)
+          .select()
+          .single();
+
+      return InvoiceItemGroup.fromJson(response);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// Delete an item group (items will have group_id set to null)
+  static Future<bool> deleteItemGroup(String groupId) async {
+    try {
+      await _supabase
+          .from('invoice_item_groups')
+          .delete()
+          .eq('id', groupId);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Move items to a group
+  static Future<bool> moveItemsToGroup(
+    List<String> itemIds,
+    String? groupId,
+  ) async {
+    try {
+      await _supabase
+          .from('invoice_items')
+          .update({
+            'group_id': groupId,
+            'updated_at': DateTime.now().toIso8601String(),
+          })
+          .inFilter('id', itemIds);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Reorder items within an invoice
+  static Future<bool> reorderItems(
+    String invoiceId,
+    List<String> itemIds,
+  ) async {
+    try {
+      for (int i = 0; i < itemIds.length; i++) {
+        await _supabase
+            .from('invoice_items')
+            .update({
+              'sort_order': i,
+              'updated_at': DateTime.now().toIso8601String(),
+            })
+            .eq('id', itemIds[i]);
+      }
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // ============ ITEM-LEVEL OPERATIONS ============
+
+  /// Add a single item to an invoice
+  static Future<InvoiceItemModel?> addInvoiceItem(
+    String invoiceId,
+    InvoiceItemModel item,
+  ) async {
+    try {
+      final itemData = item.toJson();
+      itemData.remove('id');
+      itemData['invoice_id'] = invoiceId;
+      itemData['created_at'] = DateTime.now().toIso8601String();
+      itemData['updated_at'] = DateTime.now().toIso8601String();
+
+      final response = await _supabase
+          .from('invoice_items')
+          .insert(itemData)
+          .select()
+          .single();
+
+      // Recalculate invoice totals
+      await _recalculateInvoiceTotals(invoiceId);
+
+      return InvoiceItemModel.fromJson(response);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// Update a single invoice item
+  static Future<InvoiceItemModel?> updateInvoiceItem(
+    InvoiceItemModel item,
+  ) async {
+    try {
+      final itemData = item.toJson();
+      itemData.remove('created_at');
+      itemData['updated_at'] = DateTime.now().toIso8601String();
+
+      final response = await _supabase
+          .from('invoice_items')
+          .update(itemData)
+          .eq('id', item.id)
+          .select()
+          .single();
+
+      // Recalculate invoice totals
+      await _recalculateInvoiceTotals(item.invoiceId);
+
+      return InvoiceItemModel.fromJson(response);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// Delete a single invoice item
+  static Future<bool> deleteInvoiceItem(String itemId, String invoiceId) async {
+    try {
+      await _supabase
+          .from('invoice_items')
+          .delete()
+          .eq('id', itemId);
+
+      // Recalculate invoice totals
+      await _recalculateInvoiceTotals(invoiceId);
+
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Record payment for a specific item
+  static Future<bool> recordItemPayment({
+    required String itemId,
+    required double amount,
+  }) async {
+    try {
+      // Get current item
+      final itemResponse = await _supabase
+          .from('invoice_items')
+          .select()
+          .eq('id', itemId)
+          .single();
+
+      final item = InvoiceItemModel.fromJson(itemResponse);
+      final newPaidAmount = item.paidAmount + amount;
+      final newStatus = newPaidAmount >= item.totalAmount
+          ? InvoiceItemStatus.paid
+          : newPaidAmount > 0
+              ? InvoiceItemStatus.partial
+              : InvoiceItemStatus.pending;
+
+      await _supabase
+          .from('invoice_items')
+          .update({
+            'paid_amount': newPaidAmount,
+            'status': newStatus.name,
+            'updated_at': DateTime.now().toIso8601String(),
+          })
+          .eq('id', itemId);
+
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Get items by due date range
+  static Future<List<InvoiceItemModel>> getItemsByDueDate({
+    required String businessId,
+    DateTime? fromDate,
+    DateTime? toDate,
+    InvoiceItemStatus? status,
+  }) async {
+    try {
+      var query = _supabase
+          .from('invoice_items')
+          .select('*, invoices!inner(business_id)')
+          .eq('invoices.business_id', businessId);
+
+      if (fromDate != null) {
+        query = query.gte('due_date', fromDate.toIso8601String().split('T')[0]);
+      }
+      if (toDate != null) {
+        query = query.lte('due_date', toDate.toIso8601String().split('T')[0]);
+      }
+      if (status != null) {
+        query = query.eq('status', status.name);
+      }
+
+      final response = await query.order('due_date');
+
+      return (response as List)
+          .map((json) => InvoiceItemModel.fromJson(json))
+          .toList();
+    } catch (e) {
+      return [];
+    }
+  }
+
+  /// Recalculate invoice totals based on items
+  static Future<void> _recalculateInvoiceTotals(String invoiceId) async {
+    try {
+      final itemsResponse = await _supabase
+          .from('invoice_items')
+          .select()
+          .eq('invoice_id', invoiceId);
+
+      final items = (itemsResponse as List)
+          .map((json) => InvoiceItemModel.fromJson(json))
+          .toList();
+
+      double subtotal = 0;
+      double taxAmount = 0;
+      double discountAmount = 0;
+
+      for (final item in items) {
+        subtotal += item.subtotal;
+        taxAmount += item.taxAmount;
+        discountAmount += item.discountAmount;
+      }
+
+      final totalAmount = subtotal + taxAmount - discountAmount;
+
+      await _supabase
+          .from('invoices')
+          .update({
+            'subtotal': subtotal,
+            'tax_amount': taxAmount,
+            'discount_amount': discountAmount,
+            'total_amount': totalAmount,
+            'updated_at': DateTime.now().toIso8601String(),
+          })
+          .eq('id', invoiceId);
+    } catch (e) {
+    }
+  }
+
+  // ============ TEMPLATE MANAGEMENT ============
+
+  /// Create an invoice template
+  static Future<InvoiceTemplateModel?> createTemplate(
+    InvoiceTemplateModel template,
+  ) async {
+    try {
+      final templateData = template.toJson();
+      templateData.remove('id');
+      templateData['created_at'] = DateTime.now().toIso8601String();
+      templateData['updated_at'] = DateTime.now().toIso8601String();
+
+      // If this is set as default, unset other defaults
+      if (template.isDefault) {
+        await _supabase
+            .from('invoice_templates')
+            .update({'is_default': false})
+            .eq('business_id', template.businessId);
+      }
+
+      final response = await _supabase
+          .from('invoice_templates')
+          .insert(templateData)
+          .select()
+          .single();
+
+      return InvoiceTemplateModel.fromJson(response);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// Update an invoice template
+  static Future<InvoiceTemplateModel?> updateTemplate(
+    InvoiceTemplateModel template,
+  ) async {
+    try {
+      final templateData = template.toJson();
+      templateData.remove('created_at');
+      templateData['updated_at'] = DateTime.now().toIso8601String();
+
+      // If this is set as default, unset other defaults
+      if (template.isDefault) {
+        await _supabase
+            .from('invoice_templates')
+            .update({'is_default': false})
+            .eq('business_id', template.businessId)
+            .neq('id', template.id);
+      }
+
+      final response = await _supabase
+          .from('invoice_templates')
+          .update(templateData)
+          .eq('id', template.id)
+          .select()
+          .single();
+
+      return InvoiceTemplateModel.fromJson(response);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// Get default template for a business
+  static Future<InvoiceTemplateModel?> getDefaultTemplate(
+    String businessId,
+  ) async {
+    try {
+      final response = await _supabase
+          .from('invoice_templates')
+          .select()
+          .eq('business_id', businessId)
+          .eq('is_default', true)
+          .maybeSingle();
+
+      if (response == null) return null;
+      return InvoiceTemplateModel.fromJson(response);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// Delete an invoice template
+  static Future<bool> deleteTemplate(String templateId) async {
+    try {
+      await _supabase
+          .from('invoice_templates')
+          .delete()
+          .eq('id', templateId);
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 
@@ -446,8 +863,6 @@ class InvoiceService {
 
       return response as String;
     } catch (e) {
-      print('Error generating invoice number via RPC: $e');
-      print('Falling back to client-side generation...');
 
       // Fallback to client-side generation
       try {
@@ -474,7 +889,6 @@ class InvoiceService {
         final nextNum = maxNum + 1;
         return '$prefix-${nextNum.toString().padLeft(4, '0')}';
       } catch (fallbackError) {
-        print('Error in fallback generation: $fallbackError');
         // Last resort: timestamp-based
         final now = DateTime.now();
         final year = now.year.toString().substring(2);
@@ -559,7 +973,6 @@ class InvoiceService {
             totalAmount > 0 ? (paidAmount / totalAmount) * 100 : 0,
       };
     } catch (e) {
-      print('Error fetching invoice stats: $e');
       return {};
     }
   }
@@ -584,7 +997,6 @@ class InvoiceService {
           .map((json) => InvoiceModel.fromJson(json))
           .toList();
     } catch (e) {
-      print('Error fetching overdue invoices: $e');
       return [];
     }
   }
@@ -611,7 +1023,6 @@ class InvoiceService {
           .map((json) => InvoiceModel.fromJson(json))
           .toList();
     } catch (e) {
-      print('Error fetching upcoming due invoices: $e');
       return [];
     }
   }
@@ -662,7 +1073,6 @@ class InvoiceService {
 
       return true;
     } catch (e) {
-      print('Error recording payment: $e');
       return false;
     }
   }
@@ -670,7 +1080,7 @@ class InvoiceService {
   // ============ INVOICE TEMPLATES ============
 
   /// Get invoice templates for a business
-  static Future<List<Map<String, dynamic>>> getInvoiceTemplates(
+  static Future<List<InvoiceTemplateModel>> getInvoiceTemplates(
     String businessId,
   ) async {
     try {
@@ -680,9 +1090,10 @@ class InvoiceService {
           .eq('business_id', businessId)
           .order('name');
 
-      return List<Map<String, dynamic>>.from(response);
+      return (response as List)
+          .map((json) => InvoiceTemplateModel.fromJson(json))
+          .toList();
     } catch (e) {
-      print('Error fetching invoice templates: $e');
       return [];
     }
   }
@@ -714,7 +1125,6 @@ class InvoiceService {
 
       return await createInvoice(invoice);
     } catch (e) {
-      print('Error creating invoice from template: $e');
       return null;
     }
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../services/theme_manager_service.dart';
+import 'package:provider/provider.dart';
+import '../../utils/theme_manager.dart';
 
 class ThemeSettingsScreen extends StatefulWidget {
   const ThemeSettingsScreen({super.key});
@@ -9,69 +10,41 @@ class ThemeSettingsScreen extends StatefulWidget {
 }
 
 class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
-  ThemeMode _selectedThemeMode = ThemeMode.system;
-  Color _selectedPrimaryColor = Colors.blue;
-  Color _selectedAccentColor = Colors.orange;
-  bool _isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadCurrentSettings();
-  }
-
-  Future<void> _loadCurrentSettings() async {
-    final themeMode = await ThemeManagerService.getThemeMode();
-    final primaryColor = await ThemeManagerService.getPrimaryColor();
-    final accentColor = await ThemeManagerService.getAccentColor();
-
-    setState(() {
-      _selectedThemeMode = themeMode;
-      _selectedPrimaryColor = primaryColor;
-      _selectedAccentColor = accentColor;
-      _isLoading = false;
-    });
-  }
-
   Future<void> _saveThemeMode(ThemeMode mode) async {
-    await ThemeManagerService.setThemeMode(mode);
-    setState(() {
-      _selectedThemeMode = mode;
-    });
+    final themeManager = Provider.of<ThemeManager>(context, listen: false);
+    await themeManager.setTheme(mode);
     
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Theme mode changed to ${ThemeManagerService.getThemeModeName(mode)}'),
+          content: Text('Theme mode changed to ${_getThemeModeName(mode)}'),
           backgroundColor: Colors.green,
         ),
       );
-      
-      // Notify app to rebuild with new theme
-      Navigator.pop(context, true);
     }
   }
 
-  Future<void> _savePrimaryColor(Color color) async {
-    await ThemeManagerService.setPrimaryColor(color);
-    setState(() {
-      _selectedPrimaryColor = color;
-    });
-    
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Primary color updated'),
-          backgroundColor: Colors.green,
-        ),
-      );
-      
-      // Notify app to rebuild with new theme
-      Navigator.pop(context, true);
+  String _getThemeModeName(ThemeMode mode) {
+    switch (mode) {
+      case ThemeMode.light:
+        return 'Light';
+      case ThemeMode.dark:
+        return 'Dark';
+      case ThemeMode.system:
+        return 'System';
     }
   }
 
-
+  IconData _getThemeModeIcon(ThemeMode mode) {
+    switch (mode) {
+      case ThemeMode.light:
+        return Icons.light_mode;
+      case ThemeMode.dark:
+        return Icons.dark_mode;
+      case ThemeMode.system:
+        return Icons.settings_brightness;
+    }
+  }
 
   Future<void> _resetToDefault() async {
     final confirm = await showDialog<bool>(
@@ -93,8 +66,9 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
     );
 
     if (confirm == true) {
-      await ThemeManagerService.resetToDefault();
-      await _loadCurrentSettings();
+      if (!mounted) return;
+      final themeManager = Provider.of<ThemeManager>(context, listen: false);
+      await themeManager.setTheme(ThemeMode.light);
       
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -103,238 +77,199 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
             backgroundColor: Colors.green,
           ),
         );
-        
-        // Notify app to rebuild with new theme
-        Navigator.pop(context, true);
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
-      return Scaffold(
-        appBar: AppBar(
-          title: const Text('Theme Settings'),
-        ),
-        body: const Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
-    }
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Theme Settings'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _resetToDefault,
-            tooltip: 'Reset to Default',
-          ),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          // Theme Mode Section
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        ThemeManagerService.getThemeModeIcon(_selectedThemeMode),
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      const SizedBox(width: 12),
-                      Text(
-                        'Theme Mode',
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  ...ThemeManagerService.themeModes.map((mode) {
-                    return RadioListTile<ThemeMode>(
-                      title: Text(ThemeManagerService.getThemeModeName(mode)),
-                      subtitle: Text(_getThemeModeDescription(mode)),
-                      value: mode,
-                      groupValue: _selectedThemeMode,
-                      onChanged: (value) {
-                        if (value != null) {
-                          _saveThemeMode(value);
-                        }
-                      },
-                      secondary: Icon(ThemeManagerService.getThemeModeIcon(mode)),
-                    );
-                  }).toList(),
-                ],
+    return Consumer<ThemeManager>(
+      builder: (context, themeManager, child) {
+        final selectedThemeMode = themeManager.themeMode;
+        final primaryColor = ThemeManager.primaryColor;
+        
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Theme Settings'),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.refresh),
+                onPressed: _resetToDefault,
+                tooltip: 'Reset to Default',
               ),
-            ),
+            ],
           ),
-          
-          const SizedBox(height: 16),
-
-          // Primary Color Section
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
+          body: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              // Theme Mode Section
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(
-                        Icons.palette,
-                        color: Theme.of(context).colorScheme.primary,
+                      Row(
+                        children: [
+                          Icon(
+                            _getThemeModeIcon(selectedThemeMode),
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          const SizedBox(width: 12),
+                          Text(
+                            'Theme Mode',
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(height: 16),
+                      ...[ThemeMode.light, ThemeMode.dark, ThemeMode.system].map((mode) {
+                        return ListTile(
+                          title: Text(_getThemeModeName(mode)),
+                          subtitle: Text(_getThemeModeDescription(mode)),
+                          leading: Icon(_getThemeModeIcon(mode)),
+                          trailing: selectedThemeMode == mode
+                              ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.primary)
+                              : null,
+                          onTap: () => _saveThemeMode(mode),
+                          selected: selectedThemeMode == mode,
+                        );
+                      }),
+                    ],
+                  ),
+                ),
+              ),
+              
+              const SizedBox(height: 16),
+
+              // Primary Color Section (informational - colors are fixed in theme)
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.palette,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          const SizedBox(width: 12),
+                          Text(
+                            'Color Scheme',
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
                       Text(
-                        'Primary Color',
-                        style: Theme.of(context).textTheme.titleLarge,
+                        'The app uses a consistent green color scheme optimized for financial applications.',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      const SizedBox(height: 16),
+                      Wrap(
+                        spacing: 12,
+                        runSpacing: 12,
+                        children: [
+                          _buildColorChip('Primary', ThemeManager.primaryColor),
+                          _buildColorChip('Success', ThemeManager.successColor),
+                          _buildColorChip('Warning', ThemeManager.warningColor),
+                          _buildColorChip('Error', ThemeManager.errorColor),
+                          _buildColorChip('Info', ThemeManager.infoColor),
+                        ],
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
-                  Wrap(
-                    spacing: 12,
-                    runSpacing: 12,
-                    children: ThemeManagerService.primaryColors.entries.map((entry) {
-                      final isSelected = entry.value.value == _selectedPrimaryColor.value;
-                      return InkWell(
-                        onTap: () => _savePrimaryColor(entry.value),
-                        borderRadius: BorderRadius.circular(8),
-                        child: Container(
-                          width: 80,
-                          height: 80,
-                          decoration: BoxDecoration(
-                            color: entry.value,
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: isSelected ? Colors.white : Colors.transparent,
-                              width: 3,
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Preview Section
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.preview,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          const SizedBox(width: 12),
+                          Text(
+                            'Preview',
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: primaryColor.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: primaryColor),
+                        ),
+                        child: Column(
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {},
+                              child: const Text('Primary Button'),
                             ),
-                            boxShadow: isSelected
-                                ? [
-                                    BoxShadow(
-                                      color: entry.value.withOpacity(0.5),
-                                      blurRadius: 8,
-                                      spreadRadius: 2,
-                                    ),
-                                  ]
-                                : null,
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              if (isSelected)
-                                const Icon(
-                                  Icons.check_circle,
-                                  color: Colors.white,
-                                  size: 32,
-                                ),
-                              const SizedBox(height: 4),
-                              Text(
-                                entry.key,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
+                            const SizedBox(height: 8),
+                            OutlinedButton(
+                              onPressed: () {},
+                              child: const Text('Outlined Button'),
+                            ),
+                            const SizedBox(height: 8),
+                            TextButton(
+                              onPressed: () {},
+                              child: const Text('Text Button'),
+                            ),
+                          ],
                         ),
-                      );
-                    }).toList(),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 16),
-
-          // Preview Section
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.preview,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      const SizedBox(width: 12),
-                      Text(
-                        'Preview',
-                        style: Theme.of(context).textTheme.titleLarge,
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: _selectedPrimaryColor.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: _selectedPrimaryColor),
-                    ),
-                    child: Column(
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: _selectedPrimaryColor,
-                            foregroundColor: Colors.white,
-                          ),
-                          child: const Text('Primary Button'),
-                        ),
-                        const SizedBox(height: 8),
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: _selectedAccentColor,
-                            foregroundColor: Colors.white,
-                          ),
-                          child: const Text('Accent Button'),
-                        ),
-                        const SizedBox(height: 8),
-                        OutlinedButton(
-                          onPressed: () {},
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: _selectedPrimaryColor,
-                          ),
-                          child: const Text('Outlined Button'),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
-          ),
 
-          const SizedBox(height: 24),
+              const SizedBox(height: 24),
 
-          // Reset Button
-          OutlinedButton.icon(
-            onPressed: _resetToDefault,
-            icon: const Icon(Icons.refresh),
-            label: const Text('Reset to Default Theme'),
-            style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.all(16),
-            ),
+              // Reset Button
+              OutlinedButton.icon(
+                onPressed: _resetToDefault,
+                icon: const Icon(Icons.refresh),
+                label: const Text('Reset to Default Theme'),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.all(16),
+                ),
+              ),
+            ],
           ),
-        ],
+        );
+      },
+    );
+  }
+
+  Widget _buildColorChip(String label, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(
+        label,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 12,
+        ),
       ),
     );
   }

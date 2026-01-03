@@ -57,7 +57,6 @@ class ChatService {
 
       return ChatRoom.fromJson(roomResponse);
     } catch (e) {
-      print('Error creating direct chat: $e');
       return null;
     }
   }
@@ -67,7 +66,6 @@ class ChatService {
     try {
       final currentUser = _supabase.auth.currentUser;
       if (currentUser == null) {
-        print('No authenticated user found');
         return null;
       }
 
@@ -81,7 +79,6 @@ class ChatService {
               .maybeSingle();
 
       if (existingRoom != null) {
-        print('Group chat already exists, returning existing room');
         return ChatRoom.fromJson(existingRoom);
       }
 
@@ -98,7 +95,6 @@ class ChatService {
               .select()
               .single();
 
-      print('Created new chat room: ${roomResponse['id']}');
 
       // Add all group members as participants
       final groupMembers = await _supabase
@@ -106,7 +102,6 @@ class ChatService {
           .select('user_id')
           .eq('group_id', groupId);
 
-      print('Found ${groupMembers.length} group members');
 
       if (groupMembers.isNotEmpty) {
         final participants =
@@ -120,12 +115,10 @@ class ChatService {
                 .toList();
 
         await _supabase.from('chat_participants').insert(participants);
-        print('Added ${participants.length} participants to chat');
       }
 
       return ChatRoom.fromJson(roomResponse);
     } catch (e) {
-      print('Error creating group chat: $e');
       return null;
     }
   }
@@ -155,7 +148,6 @@ class ChatService {
           .map<ChatRoom>((json) => ChatRoom.fromJson(json['room']))
           .toList();
     } catch (e) {
-      print('Error getting chat rooms: $e');
       return [];
     }
   }
@@ -195,7 +187,6 @@ class ChatService {
 
       return Message.fromJson(response);
     } catch (e) {
-      print('Error sending message: $e');
       return null;
     }
   }
@@ -225,25 +216,21 @@ class ChatService {
           .reversed
           .toList();
     } catch (e) {
-      print('Error getting messages: $e');
       return [];
     }
   }
 
   // Listen to new messages in a room
   Stream<Message> listenToMessages(String roomId) {
-    print('Setting up real-time listener for room: $roomId');
     return _supabase
         .from('messages')
         .stream(primaryKey: ['id'])
         .eq('room_id', roomId)
         .order('created_at')
         .map((data) {
-          print('Received real-time data: ${data.length} messages');
           if (data.isNotEmpty) {
             // Get the latest message from the stream
             final latestMessage = data.last;
-            print('Latest message: ${latestMessage['content']}');
             return Message.fromJson({
               ...latestMessage,
               'sender': latestMessage['sender'] ?? {},
@@ -269,7 +256,6 @@ class ChatService {
           .eq('room_id', roomId)
           .eq('user_id', currentUser.id);
     } catch (e) {
-      print('Error marking as read: $e');
     }
   }
 
@@ -301,7 +287,6 @@ class ChatService {
 
       return countResponse.length;
     } catch (e) {
-      print('Error getting unread count: $e');
       return 0;
     }
   }
@@ -327,7 +312,6 @@ class ChatService {
         expenseId: expenseId,
       );
     } catch (e) {
-      print('Error sharing expense: $e');
       return null;
     }
   }

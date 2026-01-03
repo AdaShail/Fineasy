@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'recurring_payment_service.dart';
 
 class AppLifecycleService extends WidgetsBindingObserver {
   static final AppLifecycleService _instance = AppLifecycleService._internal();
   factory AppLifecycleService() => _instance;
   AppLifecycleService._internal();
 
-  void initialize() {
+  String? _currentBusinessId;
+
+  void initialize({String? businessId}) {
+    _currentBusinessId = businessId;
     WidgetsBinding.instance.addObserver(this);
+  }
+
+  void setBusinessId(String businessId) {
+    _currentBusinessId = businessId;
   }
 
   void dispose() {
@@ -20,21 +28,16 @@ class AppLifecycleService extends WidgetsBindingObserver {
 
     switch (state) {
       case AppLifecycleState.resumed:
-        print('App resumed - checking session');
         _handleAppResumed();
         break;
       case AppLifecycleState.paused:
-        print('App paused - preserving session');
         _handleAppPaused();
         break;
       case AppLifecycleState.detached:
-        print('App detached');
         break;
       case AppLifecycleState.inactive:
-        print('App inactive');
         break;
       case AppLifecycleState.hidden:
-        print('App hidden');
         break;
     }
   }
@@ -44,17 +47,34 @@ class AppLifecycleService extends WidgetsBindingObserver {
       // Check if session is still valid when app resumes
       final session = Supabase.instance.client.auth.currentSession;
       if (session != null && session.isExpired) {
-        print('Session expired, attempting refresh');
         await Supabase.instance.client.auth.refreshSession();
       }
+
+      // Process recurring payments when app resumes
+      await _processRecurringPayments();
     } catch (e) {
-      print('Error handling app resume: $e');
     }
   }
 
   void _handleAppPaused() {
     // App is going to background - session should be preserved automatically
     // by Supabase's persistent storage
-    print('App going to background, session will be preserved');
+  }
+
+  /// Process recurring payments to generate any due occurrences
+  Future<void> _processRecurringPayments() async {
+    if (_currentBusinessId == null) {
+      return;
+    }
+
+    try {
+      final count = await RecurringPaymentService.processRecurringPayments(
+        businessId: _currentBusinessId!,
+      );
+      
+      if (count > 0) {
+      }
+    } catch (e) {
+    }
   }
 }

@@ -18,7 +18,6 @@ class EncryptedStorageService {
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
     await _encryptionService.initialize();
-    debugPrint('Encrypted storage service initialized');
   }
 
   Future<SharedPreferences> get _preferences async {
@@ -33,7 +32,6 @@ class EncryptedStorageService {
       final prefs = await _preferences;
       return await prefs.setString(key, encrypted);
     } catch (e) {
-      debugPrint('Failed to store encrypted string: $e');
       return false;
     }
   }
@@ -47,7 +45,6 @@ class EncryptedStorageService {
 
       return await _encryptionService.decryptString(encrypted);
     } catch (e) {
-      debugPrint('Failed to retrieve encrypted string: $e');
       return null;
     }
   }
@@ -60,7 +57,6 @@ class EncryptedStorageService {
       final prefs = await _preferences;
       return await prefs.setString(key, jsonString);
     } catch (e) {
-      debugPrint('Failed to store encrypted JSON: $e');
       return false;
     }
   }
@@ -75,7 +71,6 @@ class EncryptedStorageService {
       final encrypted = jsonDecode(jsonString) as Map<String, dynamic>;
       return await _encryptionService.decryptMap(encrypted);
     } catch (e) {
-      debugPrint('Failed to retrieve encrypted JSON: $e');
       return null;
     }
   }
@@ -90,7 +85,6 @@ class EncryptedStorageService {
       final prefs = await _preferences;
       return await prefs.setStringList(key, encrypted);
     } catch (e) {
-      debugPrint('Failed to store encrypted list: $e');
       return false;
     }
   }
@@ -108,7 +102,6 @@ class EncryptedStorageService {
       }
       return decrypted;
     } catch (e) {
-      debugPrint('Failed to retrieve encrypted list: $e');
       return null;
     }
   }

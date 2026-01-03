@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 /// API Configuration for different environments
 class ApiConfig {
   // Production API URL (update this with your actual deployed URL)
@@ -24,16 +22,6 @@ class ApiConfig {
       throw StateError(
         'SECURITY ERROR: Production builds must use HTTPS. '
         'Current URL: $url. Please update API_BASE_URL environment variable.',
-      );
-    }
-
-    // Warn about HTTP usage in development
-    if (!isProduction &&
-        url.startsWith('http://') &&
-        !url.contains('localhost')) {
-      debugPrint(
-        'WARNING: Using HTTP for non-localhost URL in development: $url. '
-        'Consider using HTTPS for better security.',
       );
     }
 
@@ -76,33 +64,11 @@ class ApiConfig {
           'Current base URL: $baseUrl',
         );
       }
-
-      debugPrint('✓ Security Check: All API endpoints using HTTPS');
-    } else {
-      if (isSecureUrl(baseUrl)) {
-        debugPrint('✓ Development mode using HTTPS: $baseUrl');
-      } else {
-        debugPrint('⚠ Development mode using HTTP: $baseUrl');
-        debugPrint(
-          '  Consider using HTTPS even in development for better security testing',
-        );
-      }
     }
   }
 
-  // Debug information
+  // Debug information (no-op in production)
   static void printConfig() {
-    debugPrint('API Configuration:');
-    debugPrint(
-      '   Environment: ${bool.fromEnvironment('dart.vm.product') ? 'Production' : 'Development'}',
-    );
-    debugPrint('   Base URL: $baseUrl');
-    debugPrint(
-      '   Protocol: ${isSecureUrl(baseUrl) ? 'HTTPS (Secure)' : 'HTTP (Insecure)'}',
-    );
-    debugPrint('   Connect Timeout: ${connectTimeout.inSeconds}s');
-    debugPrint('   Receive Timeout: ${receiveTimeout.inSeconds}s');
-
     // Run security validation
     validateSecureConnection();
   }

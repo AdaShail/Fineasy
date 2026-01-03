@@ -44,7 +44,6 @@ class AuthorizationService {
 
       return userPermission.permissions.contains(permission);
     } catch (e) {
-      debugPrint('Error checking permission: $e');
       return false;
     }
   }
@@ -58,7 +57,6 @@ class AuthorizationService {
       final key = '${userId}_$businessId';
       return _userPermissions[key];
     } catch (e) {
-      debugPrint('Error getting user permission: $e');
       return null;
     }
   }
@@ -100,7 +98,6 @@ class AuthorizationService {
 
       return true;
     } catch (e) {
-      debugPrint('Error granting permission: $e');
       return false;
     }
   }
@@ -132,7 +129,6 @@ class AuthorizationService {
 
       return true;
     } catch (e) {
-      debugPrint('Error revoking permission: $e');
       return false;
     }
   }
@@ -183,7 +179,6 @@ class AuthorizationService {
       _approvalWorkflows[workflow.id] = workflow;
       return workflow.id;
     } catch (e) {
-      debugPrint('Error creating approval workflow: $e');
       return null;
     }
   }
@@ -209,7 +204,6 @@ class AuthorizationService {
 
       return null;
     } catch (e) {
-      debugPrint('Error getting approval workflow: $e');
       return null;
     }
   }
@@ -229,7 +223,6 @@ class AuthorizationService {
 
       return workflow != null;
     } catch (e) {
-      debugPrint('Error checking approval requirement: $e');
       return false;
     }
   }
@@ -280,7 +273,6 @@ class AuthorizationService {
       _approvalRequests[request.id] = request;
       return request.id;
     } catch (e) {
-      debugPrint('Error creating approval request: $e');
       return null;
     }
   }
@@ -388,7 +380,6 @@ class AuthorizationService {
 
       return true;
     } catch (e) {
-      debugPrint('Error submitting approval response: $e');
       return false;
     }
   }
@@ -398,7 +389,6 @@ class AuthorizationService {
     try {
       return _approvalRequests[requestId];
     } catch (e) {
-      debugPrint('Error getting approval request: $e');
       return null;
     }
   }
@@ -429,7 +419,6 @@ class AuthorizationService {
 
       return pendingRequests;
     } catch (e) {
-      debugPrint('Error getting pending approval requests: $e');
       return [];
     }
   }
@@ -475,7 +464,6 @@ class AuthorizationService {
       _emergencyOverrides[override.id] = override;
       return override.id;
     } catch (e) {
-      debugPrint('Error creating emergency override: $e');
       return null;
     }
   }
@@ -502,7 +490,6 @@ class AuthorizationService {
 
       return false;
     } catch (e) {
-      debugPrint('Error checking emergency override: $e');
       return false;
     }
   }
@@ -545,7 +532,6 @@ class AuthorizationService {
 
       return true;
     } catch (e) {
-      debugPrint('Error deactivating emergency override: $e');
       return false;
     }
   }
@@ -603,7 +589,6 @@ class AuthorizationService {
         'timestamp': DateTime.now().toIso8601String(),
       });
     } catch (e) {
-      debugPrint('Error initializing authorization service: $e');
       rethrow;
     }
   }
@@ -631,7 +616,6 @@ class AuthorizationService {
       );
       return delegatedPermissions.contains(permission);
     } catch (e) {
-      debugPrint('Error checking enhanced permission: $e');
       return false;
     }
   }
@@ -655,7 +639,6 @@ class AuthorizationService {
 
       return permissions;
     } catch (e) {
-      debugPrint('Error getting delegated permissions: $e');
       return [];
     }
   }
@@ -722,7 +705,6 @@ class AuthorizationService {
 
       return delegation.id;
     } catch (e) {
-      debugPrint('Error delegating permissions: $e');
       return null;
     }
   }
@@ -754,7 +736,6 @@ class AuthorizationService {
 
       return true;
     } catch (e) {
-      debugPrint('Error revoking delegation: $e');
       return false;
     }
   }
@@ -809,7 +790,6 @@ class AuthorizationService {
 
       return overrideId;
     } catch (e) {
-      debugPrint('Error executing enhanced emergency override: $e');
       return null;
     }
   }
@@ -838,7 +818,6 @@ class AuthorizationService {
     try {
       return await getUserPermission(userId, businessId);
     } catch (e) {
-      debugPrint('Error getting user role: $e');
       return null;
     }
   }
@@ -866,7 +845,6 @@ class AuthorizationService {
 
       return permissions.toList();
     } catch (e) {
-      debugPrint('Error getting effective permissions: $e');
       return [];
     }
   }
@@ -879,7 +857,6 @@ class AuthorizationService {
     try {
       return await getPendingApprovalRequests(userId, businessId);
     } catch (e) {
-      debugPrint('Error getting pending approvals: $e');
       return [];
     }
   }
@@ -913,7 +890,6 @@ class AuthorizationService {
         'lastUpdated': DateTime.now().toIso8601String(),
       };
     } catch (e) {
-      debugPrint('Error getting user authorization status: $e');
       return {};
     }
   }
@@ -938,7 +914,6 @@ class AuthorizationService {
 
       return false;
     } catch (e) {
-      debugPrint('Error checking approval requirement: $e');
       return true; // Default to requiring approval on error
     }
   }
@@ -969,7 +944,6 @@ class AuthorizationService {
         requesterId,
       );
     } catch (e) {
-      debugPrint('Error requesting decision approval: $e');
       return null;
     }
   }
@@ -1010,7 +984,6 @@ class AuthorizationService {
 
       return false;
     } catch (e) {
-      debugPrint('Error checking threshold conditions: $e');
       return false;
     }
   }
@@ -1064,7 +1037,6 @@ class AuthorizationService {
           return approvedResponses.length >= workflow.minimumApprovals;
       }
     } catch (e) {
-      debugPrint('Error checking required approvals: $e');
       return false;
     }
   }

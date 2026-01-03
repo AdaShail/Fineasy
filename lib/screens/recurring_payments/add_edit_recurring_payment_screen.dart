@@ -57,7 +57,6 @@ class _AddEditRecurringPaymentScreenState extends State<AddEditRecurringPaymentS
       final customerProvider = context.read<CustomerProvider>();
       if (customerProvider.customers.isEmpty) {
         // Customers not loaded yet - trigger load
-        debugPrint('RecurringPayment: Loading customers...');
       }
     });
   }
@@ -171,8 +170,6 @@ class _AddEditRecurringPaymentScreenState extends State<AddEditRecurringPaymentS
                 final customers = customerProvider.customers;
                 
                 // Debug logging
-                debugPrint('RecurringPayment: ${customers.length} customers available');
-                debugPrint('RecurringPayment: Selected customer ID: $_selectedCustomerId');
                 
                 // Show loading state if customers are being loaded
                 if (customerProvider.isLoading) {
@@ -219,7 +216,6 @@ class _AddEditRecurringPaymentScreenState extends State<AddEditRecurringPaymentS
                 // Validate selected customer exists in list
                 if (_selectedCustomerId != null && 
                     !customers.any((c) => c.id == _selectedCustomerId)) {
-                  debugPrint('RecurringPayment: WARNING - Selected customer not in list, clearing selection');
                   _selectedCustomerId = null;
                 }
                 
@@ -238,7 +234,6 @@ class _AddEditRecurringPaymentScreenState extends State<AddEditRecurringPaymentS
                     );
                   }).toList(),
                   onChanged: (value) {
-                    debugPrint('RecurringPayment: Customer selected: $value');
                     setState(() => _selectedCustomerId = value);
                   },
                   validator: (value) {
